@@ -101,10 +101,11 @@ Toggle listing of `untracked` files.
 
 Run Prettier formatting on staged files, or format the current directory when no files are staged.
 
+package.json:
+
 ```json
-# package.json
 "scripts": {
-  "format": "yarn prettier --write $(git-print --staged-only || printf '.')"
+  "prettier": "yarn prettier --write $(git-print --staged-only || printf '.')"
 }
 ```
 
