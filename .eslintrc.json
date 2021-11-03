@@ -1,0 +1,57 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "plugins": ["@typescript-eslint", "functional", "import", "jest"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:functional/no-mutations",
+    "plugin:functional/stylistic",
+    "plugin:import/recommended",
+    "plugin:jest/recommended",
+    "plugin:node/recommended-module",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "functional/no-let": "warn",
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc"
+        }
+      }
+    ],
+    "no-console": "warn",
+    "node/no-missing-import": 0
+  },
+   "settings": {
+    "import/resolver": {
+        "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "typescript": "{}"
+    }
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "functional/no-let": 0,
+        "node/no-unpublished-import": 0
+      }
+    }
+  ]
+}

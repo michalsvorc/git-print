@@ -1,0 +1,94 @@
+{
+  "name": "git-print",
+  "version": "1.0.0",
+  "description": "Print normalized list of git status files for command line usage.",
+  "author": "Michal Svorc (https://michalsvorc.com)",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": "https://github.com/michalsvorc/git-print",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "build": "yarn build:prebuild && yarn build:compile",
+    "build:compile": "rollup -c",
+    "build:prebuild": "shx rm -r dist ; shx mkdir -p dist",
+    "fix": "yarn fix:es && yarn fix:format",
+    "fix:es": "yarn lint:es --fix",
+    "fix:format": "yarn format --write",
+    "format": "prettier .",
+    "hooks": "git config core.hooksPath .hooks",
+    "lint": "yarn lint:es && yarn lint:ts && yarn lint:format",
+    "lint:es": "eslint --cache --ignore-path .gitignore src",
+    "lint:format": "yarn format --check",
+    "lint:ts": "tsc --noemit",
+    "qa": "yarn lint && yarn test",
+    "start": "NODE_ENV=development yarn watch:dist & yarn watch:ts",
+    "start:production": "NODE_ENV=production node dist/index.js",
+    "test": "jest --coverage src",
+    "watch:dist": "nodemon dist/index.js",
+    "watch:lint": "nodemon --watch src --ext ts,json --exec yarn lint",
+    "watch:test": "jest --watch --onlyChanged --coverage",
+    "watch:ts": "tsc --watch"
+  },
+  "packageManager": "yarn@3.1.0",
+  "dependencies": {
+    "execa": "^5.1.1",
+    "minimist": "^1.2.5",
+    "shx": "^0.3.3"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/jest": "^27.0.2",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^16.11.6",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-functional": "^4.0.2",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jest": "^25.2.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint_d": "^11.0.0",
+    "jest": "^27.3.1",
+    "lint-staged": "^11.2.6",
+    "nodemon": "^2.0.14",
+    "prettier": "^2.4.1",
+    "rollup": "^2.59.0",
+    "ts-jest": "^27.0.7",
+    "tsc-files": "^1.1.2",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "tsc-files --noEmit",
+      "prettier --write",
+      "jest --findRelatedTests"
+    ],
+    "**/*.json": "prettier --write",
+    "**/*.md": "prettier --write"
+  },
+  "directories": {
+    "bin": "bin"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "keywords": [
+    "git",
+    "status",
+    "list",
+    "files",
+    "changed",
+    "modified",
+    "cli"
+  ]
+}
