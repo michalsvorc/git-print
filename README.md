@@ -109,6 +109,21 @@ package.json:
 }
 ```
 
+## Development
+
+Clone the repository and run:
+
+```console
+$ yarn install
+$ yarn boot
+```
+
+Start local development with `yarn dev`.
+
+Optional:
+
+Install [Yarn editor SDKs](https://yarnpkg.com/getting-started/editor-sdks/).
+
 ## Changelog
 
 See the [releases](https://github.com/michalsvorc/git-print/releases) page.

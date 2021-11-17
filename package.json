@@ -10,9 +10,10 @@
     "node": ">=14"
   },
   "scripts": {
+    "boot": "ts-node bin/boot.ts",
     "build": "yarn build:prebuild && yarn build:compile",
     "build:compile": "rollup -c",
-    "build:prebuild": "shx rm -r dist ; shx mkdir -p dist",
+    "build:prebuild": "ts-node bin/prebuild.ts",
     "dev": "NODE_ENV=development yarn watch:dist & yarn watch:ts",
     "fix": "yarn fix:es && yarn fix:format",
     "fix:es": "yarn lint:es --fix",
@@ -37,12 +38,15 @@
     "minimist": "^1.2.5"
   },
   "devDependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-typescript": "^8.3.0",
     "@types/jest": "^27.0.2",
     "@types/minimist": "^1.2.2",
     "@types/node": "^16.11.6",
+    "@types/shelljs": "^0.8.9",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.3.0",
     "eslint": "^8.1.0",
@@ -59,8 +63,9 @@
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "rollup": "^2.59.0",
-    "shx": "^0.3.3",
+    "shelljs": "^0.8.4",
     "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
     "tsc-files": "^1.1.2",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"
@@ -74,6 +79,11 @@
     ],
     "**/*.json": "prettier --write",
     "**/*.md": "prettier --write"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "directories": {
     "bin": "bin"
