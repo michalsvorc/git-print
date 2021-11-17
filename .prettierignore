@@ -1,8 +1,8 @@
 # Configuration files
 /.*
 
-# Commit hooks
-/.husky/
+# Hook scripts
+/.hooks/
 
 # Yarn
 /.yarn/
@@ -16,16 +16,25 @@ __snapshots__
 # https://github.com/prettier/prettier/issues/8506#issuecomment-659604909
 # https://github.com/kaelzhang/node-ignore/issues/58
 
+# .env
+.env*
+
 # Compiled output
 /dist/
 /build/
+/lib/
 
-# Dependencies
-/node_modules/
-/jspm_packages/
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# .env
-.env*
+# Dependency directories
+node_modules/
+jspm_packages/
 
 # Tests
 /coverage/
@@ -34,16 +43,17 @@ __snapshots__
 
 # Cache
 /.cache/
+.npm
 .eslintcache
 *.tsbuildinfo
 
 # Logs
-/logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+pnpm-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -55,17 +65,16 @@ pids
 *.pid.lock
 
 # IDEs and editors
-.idea
-.project
-.classpath
-/.c9/
-*.launch
-/.settings/
-*.sublime-workspace
 Session.vim
+.idea
+.vscode
+*.launch
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
 
 # OS
 .DS_Store
-
-# Yarn
-.yarn/*
