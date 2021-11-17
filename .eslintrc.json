@@ -47,6 +47,12 @@
   },
   "overrides": [
     {
+      "files": ["bin/*.ts"],
+      "rules": {
+        "node/no-unpublished-import": 0
+      }
+    },
+    {
       "files": ["*.spec.ts"],
       "rules": {
         "functional/no-let": 0,

@@ -25,5 +25,5 @@
     "strictPropertyInitialization": false,
     "noUnusedParameters": false
   },
-  "include": ["src/**/*.ts"]
+  "include": ["bin/**/*.ts", "src/**/*.ts"]
 }
