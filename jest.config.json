@@ -2,7 +2,12 @@
   "preset": "ts-jest",
   "coverageDirectory": "coverage",
   "collectCoverageFrom": ["<rootDir>/src/**/*.ts"],
-  "coveragePathIgnorePatterns": ["./constants.ts", "./main.ts", "index.ts"],
+  "coveragePathIgnorePatterns": [
+    "./constants.ts",
+    "./main.ts",
+    "index.ts",
+    "executeCommand.ts"
+  ],
   "coverageThreshold": {
     "global": {
       "branches": 80,
