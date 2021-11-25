@@ -114,8 +114,7 @@ package.json:
 Clone the repository and run:
 
 ```console
-$ yarn install
-$ yarn boot
+$ yarn run bootstrap
 ```
 
 Start local development with `yarn dev`.

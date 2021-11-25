@@ -6,11 +6,12 @@
   "license": "MIT",
   "main": "dist/index.js",
   "repository": "https://github.com/michalsvorc/git-print",
+  "packageManager": "yarn@3.1.0",
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "boot": "ts-node bin/boot.ts",
+    "bootstrap": "yarn exec git config core.hooksPath .hooks ; yarn install",
     "build": "yarn build:prebuild && yarn build:compile",
     "build:compile": "rollup -c",
     "build:prebuild": "ts-node bin/prebuild.ts",
@@ -32,7 +33,6 @@
     "watch:test": "jest --watch --onlyChanged --coverage",
     "watch:ts": "tsc --watch"
   },
-  "packageManager": "yarn@3.1.0",
   "dependencies": {
     "execa": "^6.0.0",
     "minimist": "^1.2.5"
