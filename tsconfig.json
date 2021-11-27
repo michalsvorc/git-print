@@ -25,5 +25,6 @@
     "strictPropertyInitialization": false,
     "noUnusedParameters": false
   },
-  "include": ["bin/**/*.ts", "src/**/*.ts"]
+  "include": ["bin/**/*.ts", "src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
