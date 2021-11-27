@@ -11,10 +11,10 @@
     "node": ">=14"
   },
   "scripts": {
-    "bootstrap": "yarn exec git config core.hooksPath .hooks ; yarn install",
+    "bootstrap": "yarn exec bin/bootstrap.sh",
     "build": "yarn build:prebuild && yarn build:compile",
     "build:compile": "rollup -c",
-    "build:prebuild": "ts-node bin/prebuild.ts",
+    "build:prebuild": "yarn exec bin/prebuild.sh",
     "dev": "NODE_ENV=development yarn watch:dist & yarn watch:ts",
     "fix": "yarn fix:es && yarn fix:format",
     "fix:es": "yarn lint:es --fix",
@@ -46,7 +46,6 @@
     "@types/jest": "^27.0.2",
     "@types/minimist": "^1.2.2",
     "@types/node": "^16.11.6",
-    "@types/shelljs": "^0.8.9",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "eslint": "^8.2.0",
@@ -63,13 +62,18 @@
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "rollup": "^2.60.0",
-    "shelljs": "^0.8.4",
     "ts-jest": "^27.0.7",
-    "ts-node": "^10.4.0",
     "tsc-files": "^1.1.2",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"
   },
+  "directories": {
+    "bin": "bin"
+  },
+  "files": [
+    "bin/git-print",
+    "dist"
+  ],
   "lint-staged": {
     "src/**/*.ts": [
       "eslint --fix",
@@ -85,13 +89,6 @@
       "@commitlint/config-conventional"
     ]
   },
-  "directories": {
-    "bin": "bin"
-  },
-  "files": [
-    "bin/git-print",
-    "dist"
-  ],
   "keywords": [
     "git",
     "status",

@@ -111,15 +111,19 @@ package.json:
 
 ## Development
 
-Clone the repository and run:
+Clone this repository and execute:
 
 ```console
 $ yarn run bootstrap
 ```
 
-Start local development with `yarn dev`.
+See list of available commands:
 
-Optional:
+```console
+$ yarn run
+```
+
+### Optional
 
 Install [Yarn editor SDKs](https://yarnpkg.com/getting-started/editor-sdks/).
 
