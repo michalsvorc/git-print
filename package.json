@@ -34,7 +34,7 @@
     "watch:ts": "tsc --watch"
   },
   "dependencies": {
-    "execa": "^6.0.0",
+    "execa": "5.1.1",
     "minimist": "^1.2.5"
   },
   "devDependencies": {
