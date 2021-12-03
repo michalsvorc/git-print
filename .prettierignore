@@ -1,5 +1,7 @@
 # Configuration files
 /.*
+!/.*.js
+!/.*.json
 
 # Hook scripts
 /.hooks/
