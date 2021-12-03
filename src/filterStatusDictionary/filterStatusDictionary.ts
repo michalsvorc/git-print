@@ -1,10 +1,10 @@
-import { STAGED, STATUS_DELETED, UNSTAGED } from "../constants";
-
 import {
   FilterOptions,
   MutableStatusDictionary,
   StatusDictionary,
 } from "src/types";
+
+import { STAGED, STATUS_DELETED, UNSTAGED } from "../constants";
 
 export function filterStatusDictionary(statusDictionary: StatusDictionary) {
   return function filterStatusDictionaryOptions(

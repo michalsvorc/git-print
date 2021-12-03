@@ -1,6 +1,6 @@
-import { filterStatusDictionary } from "./filterStatusDictionary";
-
 import { MutableStatusDictionary } from "src/types";
+
+import { filterStatusDictionary } from "./filterStatusDictionary";
 
 describe("Filtering status dictionary", () => {
   const statusDictionary: MutableStatusDictionary = new Map();

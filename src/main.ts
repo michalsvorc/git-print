@@ -1,3 +1,5 @@
+import minimist from "minimist";
+
 import { addPathToFilenames } from "./addPathToFilenames";
 import { createFileOutput } from "./createFileOutput";
 import { createStatusDictionary } from "./createStatusDictionary";
@@ -6,8 +8,6 @@ import { filterStatusDictionary } from "./filterStatusDictionary";
 import { gitArguments } from "./gitArguments";
 import { parseArgv } from "./parseArgv";
 import { FilterOptions, Path } from "./types";
-
-import minimist from "minimist";
 
 export async function main(): Promise<ReadonlyArray<string>> {
   const {

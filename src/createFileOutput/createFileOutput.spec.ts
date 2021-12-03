@@ -1,6 +1,6 @@
-import { createFileOutput } from "./createFileOutput";
-
 import { MutableStatusDictionary, Path } from "src/types";
+
+import { createFileOutput } from "./createFileOutput";
 
 const filenames0: ReadonlyArray<Path> = ["filename.00", "filename.01"];
 

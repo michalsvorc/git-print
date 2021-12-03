@@ -1,6 +1,6 @@
-import { createStatusDictionary } from "./createStatusDictionary";
-
 import { MutableStatusDictionary, StatusOutput } from "src/types";
+
+import { createStatusDictionary } from "./createStatusDictionary";
 
 const statusOutput: StatusOutput = [
   "M  file.00",

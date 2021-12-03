@@ -1,6 +1,6 @@
-import { addPathToFilenames } from "./addPathToFilenames";
-
 import { Path } from "src/types";
+
+import { addPathToFilenames } from "./addPathToFilenames";
 
 const filenames: ReadonlyArray<Path> = ["filename.00", "filename.01"];
 
