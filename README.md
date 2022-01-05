@@ -104,8 +104,10 @@ Run Prettier formatting on staged files, or format the current directory when no
 package.json:
 
 ```json
-"scripts": {
-  "prettier": "yarn prettier --write $(git-print --staged-only || printf '.')"
+{
+  "scripts": {
+    "prettier": "yarn prettier --write $(git-print --staged-only || printf '.')"
+  }
 }
 ```
 
