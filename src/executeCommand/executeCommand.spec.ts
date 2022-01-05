@@ -1,15 +1,10 @@
-/**
- * Test disabled due to import errors for execa ESM module.
- * https://github.com/sindresorhus/execa/releases/tag/v6.0.0
- */
-import { executeCommand } from "./executeCommand";
+import execa from "execa";
 
-import { execa } from "execa";
-import { mocked } from "ts-jest/utils";
+import { executeCommand } from "./executeCommand";
 
 jest.mock("execa");
 
-const mockedExeca = mocked(execa);
+const mockedExeca = jest.mocked(execa);
 
 describe("Git execution", () => {
   it("should call a child process library with correct arguments", async () => {
