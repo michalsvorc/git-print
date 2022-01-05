@@ -1,6 +1,4 @@
 #!/usr/bin/env sh
 
-git config core.hooksPath .hooks \
-  && printf "Git hooks registered.\n"
-
-yarn install
+printf 'Registering git hooks.\n'
+git config core.hooksPath .hooks

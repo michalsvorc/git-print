@@ -114,24 +114,22 @@ package.json:
 Clone this repository and execute:
 
 ```console
-$ yarn run bootstrap
+$ yarn install && yarn run bootstrap
 ```
 
-See list of available commands:
+Install [editor SDKs](https://yarnpkg.com/getting-started/editor-sdks/).
+
+See the list of available commands:
 
 ```console
 $ yarn run
 ```
 
-### Optional
-
-Install [Yarn editor SDKs](https://yarnpkg.com/getting-started/editor-sdks/).
-
 ## Changelog
 
 See the [releases](https://github.com/michalsvorc/git-print/releases) page.
 
-## API usage
+## Similar projects
 
 List of similar projects with API usage:
 
