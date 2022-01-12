@@ -1,8 +1,4 @@
-import type { ExecaReturnValue } from "execa";
-
 export type Path = string;
-export type CommandReturnValue = ExecaReturnValue;
-export type GitKeys = ReadonlyArray<string>;
 export type StatusDictionary = ReadonlyMap<string, ReadonlyArray<string>>;
 export type StatusOutput = ReadonlyArray<string>;
 export interface GitArgumentsOptions {

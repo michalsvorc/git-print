@@ -6,6 +6,7 @@ import { createStatusDictionary } from "./createStatusDictionary";
 import { executeCommand } from "./executeCommand";
 import { filterStatusDictionary } from "./filterStatusDictionary";
 import { gitArguments } from "./gitArguments";
+import { gitRoot } from "./gitRoot/gitRoot";
 import { parseArgv } from "./parseArgv";
 import { FilterOptions, Path } from "./types";
 
@@ -19,7 +20,7 @@ export async function main(): Promise<ReadonlyArray<string>> {
     "staged-only": argvStagedOnly,
   } = minimist(process.argv.slice(2));
 
-  const cwd: Path = parseArgv(argvCWd) || "./";
+  const cwd: Path = parseArgv(argvCWd) || (await gitRoot()).stdout;
   const deleted: boolean = parseArgv(argvDeleted) ?? true;
   const staged: boolean = parseArgv(argvStaged) ?? true;
   const stagedOnly: boolean = parseArgv(argvStagedOnly) ?? false;
@@ -34,7 +35,7 @@ export async function main(): Promise<ReadonlyArray<string>> {
 
   return executeCommand("git")(
     gitArguments({ untracked: untracked && !stagedOnly })
-  )(cwd)
+  )({ cwd })
     .then((result) => {
       const { stdout } = result;
 

@@ -1,11 +1,11 @@
-import execa from "execa";
-
-import type { CommandReturnValue, Path } from "../types";
+import execa, { ExecaReturnValue, Options } from "execa";
 
 export function executeCommand(command: string) {
-  return function executeCommandWithArguments(args: ReadonlyArray<string>) {
-    return function executeCommandPath(cwd: Path): Promise<CommandReturnValue> {
-      return execa(command, args, { cwd });
+  return function executeCommandArguments(args: ReadonlyArray<string>) {
+    return function executeCommandArguments(
+      options?: Options
+    ): Promise<ExecaReturnValue> {
+      return execa(command, args, options);
     };
   };
 }
