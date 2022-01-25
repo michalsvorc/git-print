@@ -73,21 +73,6 @@
     "bin/git-print",
     "dist"
   ],
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "tsc-files --noEmit",
-      "prettier --write",
-      "jest --findRelatedTests"
-    ],
-    "**/*.json": "prettier --write",
-    "**/*.md": "prettier --write"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
   "keywords": [
     "git",
     "status",

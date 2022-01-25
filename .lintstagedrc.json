@@ -1,0 +1,9 @@
+{
+  "src/**/*.ts": [
+    "yarn lint:ts",
+    "yarn fix",
+    "yarn test --findRelatedTests --passWithNoTests"
+  ],
+  "**/*.json": "yarn fix:format",
+  "**/*.md": "yarn fix:format"
+}
