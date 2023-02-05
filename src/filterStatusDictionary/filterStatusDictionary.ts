@@ -1,10 +1,10 @@
-import {
+import type {
   FilterOptions,
   MutableStatusDictionary,
   StatusDictionary,
-} from "src/types";
+} from "src/types.js";
 
-import { STAGED, STATUS_DELETED, UNSTAGED } from "../constants";
+import { STAGED, STATUS_DELETED, UNSTAGED } from "../constants.js";
 
 export function filterStatusDictionary(statusDictionary: StatusDictionary) {
   return function filterStatusDictionaryOptions(
@@ -21,10 +21,7 @@ export function filterStatusDictionary(statusDictionary: StatusDictionary) {
     const filteredDictionary: MutableStatusDictionary = new Map();
 
     for (const key of validKeys) {
-      filteredDictionary.set(
-        key,
-        statusDictionary.get(key) as ReadonlyArray<string>
-      );
+      filteredDictionary.set(key, statusDictionary.get(key)!);
     }
 
     return filteredDictionary;

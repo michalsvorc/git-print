@@ -1,1 +1,1 @@
-export * from "./createStatusDictionary";
+export * from "./createStatusDictionary.js";

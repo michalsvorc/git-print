@@ -1,8 +1,6 @@
-import { ExecaReturnValue } from "execa";
+import type { ExecaReturnValue } from "execa";
+import { executeCommand } from "../executeCommand/index.js";
 
-import { executeCommand } from "../executeCommand";
-import { Path } from "../types";
-
-export async function gitRoot(): Promise<ExecaReturnValue<Path>> {
+export async function gitRoot(): Promise<ExecaReturnValue> {
   return executeCommand("git")(["rev-parse", "--show-toplevel"])(undefined);
 }

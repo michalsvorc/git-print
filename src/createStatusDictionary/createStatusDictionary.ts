@@ -1,8 +1,8 @@
-import {
+import type {
   MutableStatusDictionary,
   StatusDictionary,
   StatusOutput,
-} from "../types";
+} from "../types.js";
 
 export function createStatusDictionary(
   statusOutput: StatusOutput
@@ -13,7 +13,7 @@ export function createStatusDictionary(
     const filename = line.substring(3, line.length);
 
     statusDictionary.set(status, [
-      ...(statusDictionary.get(status) || []),
+      ...(statusDictionary.get(status) ?? []),
       filename,
     ]);
   }

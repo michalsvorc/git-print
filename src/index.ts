@@ -1,5 +1,5 @@
-import { main } from "./main";
+import { main } from "./main.js";
 
-main().then((output) => {
-  process.stdout.write(`${output.join(" ")}\n`);
-});
+const output = await main();
+
+process.stdout.write(`${output.join(" ")}\n`);

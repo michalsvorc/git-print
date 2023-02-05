@@ -1,1 +1,1 @@
-export * from "./createFileOutput";
+export * from "./createFileOutput.js";

@@ -1,6 +1,6 @@
-import { MutableStatusDictionary } from "src/types";
-
-import { filterStatusDictionary } from "./filterStatusDictionary";
+import { describe, expect, it } from "vitest";
+import type { MutableStatusDictionary } from "src/types.js";
+import { filterStatusDictionary } from "./filterStatusDictionary.js";
 
 describe("Filtering status dictionary", () => {
   const statusDictionary: MutableStatusDictionary = new Map();

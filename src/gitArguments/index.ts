@@ -1,1 +1,1 @@
-export * from "./gitArguments";
+export * from "./gitArguments.js";

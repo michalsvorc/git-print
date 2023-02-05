@@ -1,8 +1,6 @@
-import { GitArgumentsOptions } from "../types";
+import type { GitArgumentsOptions } from "../types.js";
 
-export function gitArguments(
-  options: GitArgumentsOptions
-): ReadonlyArray<string> {
+export function gitArguments(options: GitArgumentsOptions): readonly string[] {
   const { untracked } = options;
   return [
     "status",

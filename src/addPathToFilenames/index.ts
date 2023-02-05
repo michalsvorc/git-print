@@ -1,1 +1,1 @@
-export * from "./addPathToFilenames";
+export * from "./addPathToFilenames.js";

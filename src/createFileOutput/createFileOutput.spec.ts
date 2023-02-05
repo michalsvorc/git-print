@@ -1,10 +1,10 @@
-import { MutableStatusDictionary, Path } from "src/types";
+import type { MutableStatusDictionary } from "src/types.js";
+import { describe, expect, it } from "vitest";
+import { createFileOutput } from "./createFileOutput.js";
 
-import { createFileOutput } from "./createFileOutput";
+const filenames0: readonly string[] = ["filename.00", "filename.01"];
 
-const filenames0: ReadonlyArray<Path> = ["filename.00", "filename.01"];
-
-const filenames1: ReadonlyArray<Path> = ["filename.02"];
+const filenames1: readonly string[] = ["filename.02"];
 
 const statusDictionary: MutableStatusDictionary = new Map();
 

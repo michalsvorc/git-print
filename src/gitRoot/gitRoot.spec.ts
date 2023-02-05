@@ -1,10 +1,8 @@
-import execa from "execa";
+import { describe, expect, it, vi } from "vitest";
+import { execa } from "execa";
+import { gitRoot } from "./gitRoot.js";
 
-import { gitRoot } from "./gitRoot";
-
-jest.mock("execa");
-
-const mockedExeca = jest.mocked(execa);
+vi.mock("execa");
 
 describe("Git root", () => {
   it("should return full path to the root directory with .git repository data", async () => {
@@ -14,6 +12,6 @@ describe("Git root", () => {
 
     await gitRoot();
 
-    expect(mockedExeca).toBeCalledWith(command, args, options);
+    expect(execa).toBeCalledWith(command, args, options);
   });
 });

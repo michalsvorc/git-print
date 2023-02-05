@@ -1,10 +1,8 @@
-import execa from "execa";
+import { describe, expect, it, vi } from "vitest";
+import { execa } from "execa";
+import { executeCommand } from "./executeCommand.js";
 
-import { executeCommand } from "./executeCommand";
-
-jest.mock("execa");
-
-const mockedExeca = jest.mocked(execa);
+vi.mock("execa");
 
 describe("Git execution", () => {
   it("should call a child process library with correct arguments", async () => {
@@ -14,6 +12,6 @@ describe("Git execution", () => {
 
     await executeCommand(command)(args)(options);
 
-    expect(mockedExeca).toBeCalledWith(command, args, options);
+    expect(execa).toBeCalledWith(command, args, options);
   });
 });

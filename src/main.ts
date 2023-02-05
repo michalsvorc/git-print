@@ -1,31 +1,33 @@
+import type { FilterOptions } from "./types.js";
 import minimist from "minimist";
+import { addPathToFilenames } from "./addPathToFilenames/index.js";
+import { createFileOutput } from "./createFileOutput/index.js";
+import { createStatusDictionary } from "./createStatusDictionary/index.js";
+import { executeCommand } from "./executeCommand/index.js";
+import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
+import { gitArguments } from "./gitArguments/index.js";
+import { gitRoot } from "./gitRoot/index.js";
+// import { parseArgv } from "./parseArgv/index.js";
 
-import { addPathToFilenames } from "./addPathToFilenames";
-import { createFileOutput } from "./createFileOutput";
-import { createStatusDictionary } from "./createStatusDictionary";
-import { executeCommand } from "./executeCommand";
-import { filterStatusDictionary } from "./filterStatusDictionary";
-import { gitArguments } from "./gitArguments";
-import { gitRoot } from "./gitRoot/gitRoot";
-import { parseArgv } from "./parseArgv";
-import { FilterOptions, Path } from "./types";
+export async function main(): Promise<readonly string[]> {
+  const parsedArgs = minimist(process.argv.slice(2), {
+    boolean: true,
+    default: {
+      cwd: (await gitRoot()).stdout,
+      deleted: true,
+      staged: true,
+      stagedOnly: false,
+      unstaged: true,
+      untracked: true,
+    },
+  });
 
-export async function main(): Promise<ReadonlyArray<string>> {
-  const {
-    cwd: argvCWd,
-    deleted: argvDeleted,
-    staged: argvStaged,
-    unstaged: argvUnstaged,
-    untracked: argvUntracked,
-    "staged-only": argvStagedOnly,
-  } = minimist(process.argv.slice(2));
-
-  const cwd: Path = parseArgv(argvCWd) || (await gitRoot()).stdout;
-  const deleted: boolean = parseArgv(argvDeleted) ?? true;
-  const staged: boolean = parseArgv(argvStaged) ?? true;
-  const stagedOnly: boolean = parseArgv(argvStagedOnly) ?? false;
-  const unstaged: boolean = parseArgv(argvUnstaged) ?? true;
-  const untracked: boolean = parseArgv(argvUntracked) ?? true;
+  const cwd = parsedArgs.cwd as string;
+  const deleted = parsedArgs.deleted as boolean;
+  const staged = parsedArgs.staged as boolean;
+  const unstaged = parsedArgs.unstaged as boolean;
+  const untracked = parsedArgs.untracked as boolean;
+  const stagedOnly = parsedArgs.stagedOnly as boolean;
 
   const stagedOnlyFilterOptions: FilterOptions = {
     deleted: false,

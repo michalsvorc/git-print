@@ -1,1 +1,1 @@
-export * from "./parseArgv";
+export * from "./parseArgv.js";

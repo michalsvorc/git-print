@@ -1,6 +1,6 @@
-import { MutableStatusDictionary, StatusOutput } from "src/types";
-
-import { createStatusDictionary } from "./createStatusDictionary";
+import type { MutableStatusDictionary, StatusOutput } from "src/types.js";
+import { describe, expect, it } from "vitest";
+import { createStatusDictionary } from "./createStatusDictionary.js";
 
 const statusOutput: StatusOutput = [
   "M  file.00",

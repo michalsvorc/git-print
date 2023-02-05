@@ -1,7 +1,8 @@
-import execa, { ExecaReturnValue, Options } from "execa";
+import type { ExecaReturnValue, Options } from "execa";
+import { execa } from "execa";
 
 export function executeCommand(command: string) {
-  return function executeCommandArguments(args: ReadonlyArray<string>) {
+  return function executeCommandArguments(args: readonly string[]) {
     return function executeCommandArguments(
       options?: Options
     ): Promise<ExecaReturnValue> {

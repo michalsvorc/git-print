@@ -1,1 +1,1 @@
-export * from "./filterStatusDictionary";
+export * from "./filterStatusDictionary.js";
