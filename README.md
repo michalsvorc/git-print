@@ -134,6 +134,12 @@ Development server:
 yarn run dev
 ```
 
+Execute development build:
+
+```shell
+yarn node dist/index.js [OPTIONS]
+```
+
 ### Guidelines
 
 - [TypeScript style guide](https://google.github.io/styleguide/tsguide.html)
