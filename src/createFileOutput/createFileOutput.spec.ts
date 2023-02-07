@@ -1,5 +1,5 @@
-import type { MutableStatusDictionary } from "src/types.js";
 import { describe, expect, it } from "vitest";
+import type { MutableStatusDictionary } from "src/types.js";
 import { createFileOutput } from "./createFileOutput.js";
 
 const filenames0: readonly string[] = ["filename.00", "filename.01"];

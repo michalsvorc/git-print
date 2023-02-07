@@ -1,5 +1,4 @@
 import type { FilterOptions } from "./types.js";
-import minimist from "minimist";
 import { addPathToFilenames } from "./addPathToFilenames/index.js";
 import { createFileOutput } from "./createFileOutput/index.js";
 import { createStatusDictionary } from "./createStatusDictionary/index.js";
@@ -7,6 +6,7 @@ import { executeCommand } from "./executeCommand/index.js";
 import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
 import { gitArguments } from "./gitArguments/index.js";
 import { gitRoot } from "./gitRoot/index.js";
+import minimist from "minimist";
 // import { parseArgv } from "./parseArgv/index.js";
 
 export async function main(): Promise<readonly string[]> {
