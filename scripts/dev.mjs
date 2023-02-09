@@ -6,11 +6,7 @@ const env = {
   NODE_ENV: "development",
 };
 const executionOptions = { env };
+await execa("yarn", ["compile"], executionOptions);
+const startProcess = await execa("yarn", ["start"], executionOptions);
 
-try {
-  await execa("yarn", ["compile"], executionOptions);
-  const startProcess = await execa("yarn", ["start"], executionOptions);
-  console.info(startProcess.stdout);
-} catch (error) {
-  console.error(error);
-}
+console.info(startProcess.stdout);

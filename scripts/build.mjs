@@ -7,16 +7,12 @@ const env = {
   NODE_ENV: process.env.NODE_ENV ?? "pruduction",
 };
 const executionOptions = { env };
-const { outDir } = tsconfig.compilerOptions;
+console.info(`Build env: ${JSON.stringify(env)}`);
 
-try {
-  if (env.NODE_ENV === "production") {
-    console.info(`Cleaning directories: ${outDir}`);
-    await execa("del-cli", [outDir], executionOptions);
-  }
-
-  console.info(`Build env: ${JSON.stringify(env)}`);
-  await execa("yarn", ["compile"], executionOptions);
-} catch (error) {
-  console.error(error);
+if (env.NODE_ENV === "production") {
+  const { outDir } = tsconfig.compilerOptions;
+  console.info(`Cleaning directories: ${outDir}`);
+  await execa("del-cli", [outDir], executionOptions);
 }
+
+await execa("yarn", ["compile"], executionOptions);
