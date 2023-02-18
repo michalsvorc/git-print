@@ -4,40 +4,23 @@ import { createFileOutput } from "./createFileOutput/index.js";
 import { createStatusDictionary } from "./createStatusDictionary/index.js";
 import { executeCommand } from "./executeCommand/index.js";
 import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
+import { getArgs } from "./args/getArgs.js";
 import { gitArguments } from "./gitArguments/index.js";
-import { gitRoot } from "./gitRoot/index.js";
-import minimist from "minimist";
-// import { parseArgv } from "./parseArgv/index.js";
+import { parseArgs } from "./args/parseArgs.js";
+
+const stagedOnlyFilterOptions: FilterOptions = {
+  deleted: false,
+  staged: true,
+  unstaged: false,
+};
 
 export async function main(): Promise<readonly string[]> {
-  const parsedArgs = minimist(process.argv.slice(2), {
-    boolean: true,
-    default: {
-      cwd: (await gitRoot()).stdout,
-      deleted: true,
-      staged: true,
-      stagedOnly: false,
-      unstaged: true,
-      untracked: true,
-    },
-  });
-
-  const cwd = parsedArgs.cwd as string;
-  const deleted = parsedArgs.deleted as boolean;
-  const staged = parsedArgs.staged as boolean;
-  const unstaged = parsedArgs.unstaged as boolean;
-  const untracked = parsedArgs.untracked as boolean;
-  const stagedOnly = parsedArgs.stagedOnly as boolean;
-
-  const stagedOnlyFilterOptions: FilterOptions = {
-    deleted: false,
-    staged: true,
-    unstaged: false,
-  };
+  const inputArgs = getArgs();
+  const args = parseArgs(inputArgs);
 
   return executeCommand("git")(
-    gitArguments({ untracked: untracked && !stagedOnly })
-  )({ cwd })
+    gitArguments({ untracked: args.untracked && !args.stagedOnly })
+  )({ cwd: args.cwd })
     .then((result) => {
       const { stdout } = result;
 
@@ -50,11 +33,11 @@ export async function main(): Promise<readonly string[]> {
       filterStatusDictionary(statusDictionary)(
         Object.assign(
           {
-            deleted,
-            staged,
-            unstaged,
+            deleted: args.deleted,
+            staged: args.staged,
+            unstaged: args.unstaged,
           },
-          stagedOnly ? stagedOnlyFilterOptions : {}
+          args.stagedOnly ? stagedOnlyFilterOptions : {}
         )
       )
     )
@@ -64,5 +47,5 @@ export async function main(): Promise<readonly string[]> {
 
       return createFileOutput(filteredStatusDictionary);
     })
-    .then((output) => addPathToFilenames(output)(cwd));
+    .then((output) => addPathToFilenames(output)(args.cwd));
 }
