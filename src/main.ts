@@ -14,13 +14,16 @@ const stagedOnlyFilterOptions: FilterOptions = {
   unstaged: false,
 };
 
-export async function main(): Promise<readonly string[]> {
+export function main(): Promise<readonly string[]> {
   const inputArgs = getArgs();
   const args = parseArgs(inputArgs);
 
-  return executeCommand("git")(
-    gitArguments({ untracked: args.untracked && !args.stagedOnly })
-  )({ cwd: args.cwd })
+  const commandArguments = gitArguments({
+    untracked: args.untracked && !args.stagedOnly,
+  });
+  const commandOptions = { cwd: args.cwd };
+
+  return executeCommand("git")(commandArguments, commandOptions)
     .then((result) => {
       const { stdout } = result;
 

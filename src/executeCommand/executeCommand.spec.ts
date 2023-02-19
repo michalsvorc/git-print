@@ -10,7 +10,7 @@ describe("Git execution", () => {
     const args = ["status", "--porcelain"];
     const options = { cwd: "./" };
 
-    await executeCommand(command)(args)(options);
+    await executeCommand(command)(args, options);
 
     expect(execa).toBeCalledWith(command, args, options);
   });
