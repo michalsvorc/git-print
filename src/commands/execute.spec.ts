@@ -4,7 +4,7 @@ import { execute } from "./execute.js";
 
 vi.mock("execa");
 
-describe("command execution", () => {
+describe("Execute command", () => {
   it("should call a child process library with correct arguments", async () => {
     const command = "cmd";
     const args = ["arg", "--flag"];

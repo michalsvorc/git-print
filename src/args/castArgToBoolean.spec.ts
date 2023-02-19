@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { castArgToBoolean } from "./castArgToBoolean.js";
 
-describe("cast argumet to Boolean", () => {
+describe("Cast argumet to Boolean", () => {
   it('should return Boolean true for string "true"', () => {
     const expected = true;
 
