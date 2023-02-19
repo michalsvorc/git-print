@@ -3,7 +3,7 @@ import { execa } from "execa";
 
 type Args = readonly string[];
 
-export function executeCommand(command: string) {
+export function execute(command: string) {
   return function executeCommandWith(
     args: Args,
     options?: Options

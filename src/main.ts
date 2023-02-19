@@ -2,7 +2,7 @@ import type { FilterOptions } from "./types.js";
 import { addPathToFilenames } from "./addPathToFilenames/index.js";
 import { createFileOutput } from "./createFileOutput/index.js";
 import { createStatusDictionary } from "./createStatusDictionary/index.js";
-import { executeCommand } from "./executeCommand/index.js";
+import { execute } from "./command/execute.js";
 import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
 import { getArgs } from "./args/getArgs.js";
 import { gitArguments } from "./gitArguments/index.js";
@@ -23,7 +23,7 @@ export function main(): Promise<readonly string[]> {
   });
   const commandOptions = { cwd: args.cwd };
 
-  return executeCommand("git")(commandArguments, commandOptions)
+  return execute("git")(commandArguments, commandOptions)
     .then((result) => {
       const { stdout } = result;
 
