@@ -2,7 +2,7 @@ import type { FilterOptions } from "./types.js";
 import { addPathToFilenames } from "./addPathToFilenames/index.js";
 import { createFileOutput } from "./createFileOutput/index.js";
 import { createStatusDictionary } from "./createStatusDictionary/index.js";
-import { execute } from "./command/execute.js";
+import { execute } from "./commands/execute.js";
 import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
 import { getArgs } from "./args/getArgs.js";
 import { gitArguments } from "./gitArguments/index.js";

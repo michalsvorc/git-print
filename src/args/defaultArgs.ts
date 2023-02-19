@@ -1,5 +1,5 @@
 import type { Arguments } from "./Arguments.type.js";
-import { getGitRoot } from "../command/getGitRoot.js";
+import { getGitRoot } from "../commands/getGitRoot.js";
 
 const defaultArgs: Arguments = {
   cwd: (await getGitRoot()).stdout,
