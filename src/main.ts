@@ -1,11 +1,11 @@
 import type { FilterOptions } from "./types.js";
-import { createFileOutput } from "./createFileOutput/index.js";
 import { createStatusDictionary } from "./createStatusDictionary/index.js";
 import { execute } from "./commands/execute.js";
 import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
 import { getArgs } from "./args/getArgs.js";
 import { gitArguments } from "./gitArguments/index.js";
 import { parseArgs } from "./args/parseArgs.js";
+import { parseOutput } from "./services/parseOutput.js";
 import { resolveAbsolutePaths } from "./services/resolveAbsolutePaths.js";
 
 const stagedOnlyFilterOptions: FilterOptions = {
@@ -49,7 +49,7 @@ export function main(): Promise<readonly string[]> {
       /*eslint-disable-next-line no-process-exit */
       if (!filteredStatusDictionary.size) process.exit(1);
 
-      return createFileOutput(filteredStatusDictionary);
+      return parseOutput(filteredStatusDictionary);
     })
     .then((output) => resolveAbsolutePaths(args.cwd)(output));
 }
