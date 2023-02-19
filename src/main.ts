@@ -18,12 +18,13 @@ export function main(): Promise<readonly string[]> {
   const inputArgs = getArgs();
   const args = parseArgs(inputArgs);
 
+  const command = "git";
   const commandArguments = gitArguments({
     untracked: args.untracked && !args.stagedOnly,
   });
   const commandOptions = { cwd: args.cwd };
 
-  return execute("git")(commandArguments, commandOptions)
+  return execute(command)(commandArguments, commandOptions)
     .then((result) => {
       const { stdout } = result;
 

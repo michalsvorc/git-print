@@ -1,7 +1,7 @@
 import type { ExecaReturnValue } from "execa";
-import { execute } from "../command/execute.js";
+import { execute } from "./execute.js";
 
-export function gitRoot(): Promise<ExecaReturnValue> {
+export function getGitRoot(): Promise<ExecaReturnValue> {
   const command = "git";
   const args = ["rev-parse", "--show-toplevel"];
 

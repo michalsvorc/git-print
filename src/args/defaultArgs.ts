@@ -1,8 +1,8 @@
 import type { Arguments } from "./Arguments.type.js";
-import { gitRoot } from "../gitRoot/index.js";
+import { getGitRoot } from "../command/getGitRoot.js";
 
 const defaultArgs: Arguments = {
-  cwd: (await gitRoot()).stdout,
+  cwd: (await getGitRoot()).stdout,
   deleted: true,
   staged: true,
   stagedOnly: false,
