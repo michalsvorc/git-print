@@ -3,7 +3,6 @@ import { createStatusDictionary } from "./createStatusDictionary/index.js";
 import { execute } from "./commands/execute.js";
 import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
 import { getArgs } from "./args/getArgs.js";
-import { gitArguments } from "./gitArguments/index.js";
 import { parseArgs } from "./args/parseArgs.js";
 import { parseOutput } from "./services/parseOutput.js";
 import { resolveAbsolutePaths } from "./services/resolveAbsolutePaths.js";
@@ -17,11 +16,16 @@ const stagedOnlyFilterOptions: FilterOptions = {
 export function main(): Promise<readonly string[]> {
   const inputArgs = getArgs();
   const args = parseArgs(inputArgs);
+   const showUntrackedFiles: boolean =  args.untracked && !args.stagedOnly
 
   const command = "git";
-  const commandArguments = gitArguments({
-    untracked: args.untracked && !args.stagedOnly,
-  });
+  const commandArguments =
+[
+    "status",
+    "--porcelain",
+    "--no-renames",
+    `--untracked-files=${showUntrackedFiles ? "all" : "no"}`,
+]
   const commandOptions = { cwd: args.cwd };
 
   return execute(command)(commandArguments, commandOptions)
