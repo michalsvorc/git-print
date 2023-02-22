@@ -16,16 +16,15 @@ const stagedOnlyFilterOptions: FilterOptions = {
 export function main(): Promise<readonly string[]> {
   const inputArgs = getArgs();
   const args = parseArgs(inputArgs);
-   const showUntrackedFiles: boolean =  args.untracked && !args.stagedOnly
+  const showUntrackedFiles: boolean = args.untracked && !args.stagedOnly;
 
   const command = "git";
-  const commandArguments =
-[
+  const commandArguments = [
     "status",
     "--porcelain",
     "--no-renames",
     `--untracked-files=${showUntrackedFiles ? "all" : "no"}`,
-]
+  ];
   const commandOptions = { cwd: args.cwd };
 
   return execute(command)(commandArguments, commandOptions)
