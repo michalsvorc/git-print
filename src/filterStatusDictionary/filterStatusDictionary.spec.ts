@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { MutableStatusDictionary } from "src/types.js";
+import type { StatusDictionary } from "src/types.js";
 import { filterStatusDictionary } from "./filterStatusDictionary.js";
 
 describe("Filtering status dictionary", () => {
-  const statusDictionary: MutableStatusDictionary = new Map();
+  const statusDictionary: StatusDictionary = new Map();
 
   statusDictionary.set("M ", ["staged"]);
   statusDictionary.set(" D", ["deleted"]);
@@ -22,7 +22,7 @@ describe("Filtering status dictionary", () => {
   });
 
   it("should filter out entries for deleted status", () => {
-    const filteredDictionary: MutableStatusDictionary = new Map();
+    const filteredDictionary = new Map();
 
     filteredDictionary.set("M ", ["staged"]);
     filteredDictionary.set(" M", ["unstaged"]);
@@ -37,7 +37,7 @@ describe("Filtering status dictionary", () => {
   });
 
   it("should filter out entries for staged files", () => {
-    const filteredDictionary: MutableStatusDictionary = new Map();
+    const filteredDictionary = new Map();
 
     filteredDictionary.set(" D", ["deleted"]);
     filteredDictionary.set(" M", ["unstaged"]);
@@ -52,7 +52,7 @@ describe("Filtering status dictionary", () => {
   });
 
   it("should filter out entries for unstaged files", () => {
-    const filteredDictionary: MutableStatusDictionary = new Map();
+    const filteredDictionary = new Map();
 
     filteredDictionary.set("M ", ["staged"]);
 

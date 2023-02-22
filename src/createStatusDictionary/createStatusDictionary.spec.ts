@@ -1,5 +1,5 @@
-import type { MutableStatusDictionary, StatusOutput } from "src/types.js";
 import { describe, expect, it } from "vitest";
+import type { StatusOutput } from "src/types.js";
 import { createStatusDictionary } from "./createStatusDictionary.js";
 
 const statusOutput: StatusOutput = [
@@ -9,7 +9,7 @@ const statusOutput: StatusOutput = [
   "MM file.03",
 ];
 
-const statusDictionary: MutableStatusDictionary = new Map();
+const statusDictionary = new Map();
 
 statusDictionary.set("M ", ["file.00", "file.01"]);
 statusDictionary.set(" M", ["file.02"]);

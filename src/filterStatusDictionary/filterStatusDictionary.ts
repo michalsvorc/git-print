@@ -1,8 +1,4 @@
-import type {
-  FilterOptions,
-  MutableStatusDictionary,
-  StatusDictionary,
-} from "src/types.js";
+import type { FilterOptions, StatusDictionary } from "src/types.js";
 
 import { STAGED, STATUS_DELETED, UNSTAGED } from "../constants.js";
 
@@ -18,10 +14,14 @@ export function filterStatusDictionary(statusDictionary: StatusDictionary) {
       .filter((key) => staged || !STAGED.test(key))
       .filter((key) => unstaged || !UNSTAGED.test(key));
 
-    const filteredDictionary: MutableStatusDictionary = new Map();
+    const filteredDictionary: StatusDictionary = new Map();
 
     for (const key of validKeys) {
-      filteredDictionary.set(key, statusDictionary.get(key)!);
+      filteredDictionary.set(
+        key,
+        // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+        statusDictionary.get(key) as readonly string[]
+      );
     }
 
     return filteredDictionary;
