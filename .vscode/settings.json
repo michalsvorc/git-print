@@ -13,5 +13,6 @@
       }
     }
   },
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js"
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "cSpell.words": ["unstaged"]
 }
