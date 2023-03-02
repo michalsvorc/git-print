@@ -1,4 +1,3 @@
-import type { FilterOptions } from "./types.js";
 import { createStatusDictionary } from "./statusDictionary/createStatusDictionary.js";
 import { execute } from "./commands/execute.js";
 import { filterStatusDictionary } from "./statusDictionary/filterStatusDictionary.js";
@@ -6,12 +5,7 @@ import { formatOutput } from "./output/formatOutput.js";
 import { getArgs } from "./args/getArgs.js";
 import { parseArgs } from "./args/parseArgs.js";
 import { resolveAbsolutePaths } from "./output/resolveAbsolutePaths.js";
-
-const stagedOnlyFilterOptions: FilterOptions = {
-  deleted: false,
-  staged: true,
-  unstaged: false,
-};
+import { stagedOnlyFilterOptions } from "./args/stagedOnlyFilterOptions.js";
 
 type Result = readonly string[];
 
