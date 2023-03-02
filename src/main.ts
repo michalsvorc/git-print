@@ -13,7 +13,10 @@ const stagedOnlyFilterOptions: FilterOptions = {
   unstaged: false,
 };
 
-export function main(): Promise<readonly string[]> {
+type Result = readonly string[];
+
+export async function main(): Promise<Result> {
+  const emptyResult: Result = [];
   const inputArgs = getArgs();
   const args = parseArgs(inputArgs);
   const showUntrackedFiles: boolean = args.untracked && !args.stagedOnly;
@@ -27,32 +30,30 @@ export function main(): Promise<readonly string[]> {
   ];
   const commandOptions = { cwd: args.cwd };
 
-  return execute(command)(commandArguments, commandOptions)
-    .then((result) => {
-      const { stdout } = result;
+  const gitStatusExecution = await execute(command)(
+    commandArguments,
+    commandOptions
+  );
+  const { stdout } = gitStatusExecution;
+  if (!stdout.length) return emptyResult;
 
-      /*eslint-disable-next-line no-process-exit */
-      if (!stdout.length) process.exit(1);
-
-      return createStatusDictionary(stdout.split("\n"));
-    })
-    .then((statusDictionary) =>
-      filterStatusDictionary(statusDictionary)(
-        Object.assign(
-          {
-            deleted: args.deleted,
-            staged: args.staged,
-            unstaged: args.unstaged,
-          },
-          args.stagedOnly ? stagedOnlyFilterOptions : {}
-        )
-      )
+  const statusDictionary = createStatusDictionary(stdout.split("\n"));
+  const filteredStatusDictionary = filterStatusDictionary(statusDictionary)(
+    Object.assign(
+      {
+        deleted: args.deleted,
+        staged: args.staged,
+        unstaged: args.unstaged,
+      },
+      args.stagedOnly ? stagedOnlyFilterOptions : {}
     )
-    .then((filteredStatusDictionary) => {
-      /*eslint-disable-next-line no-process-exit */
-      if (!filteredStatusDictionary.size) process.exit(1);
+  );
 
-      return parseOutput(filteredStatusDictionary);
-    })
-    .then((output) => resolveAbsolutePaths(args.cwd)(output));
+  if (!filteredStatusDictionary.size) return emptyResult;
+
+  const parsedOutput = parseOutput(filteredStatusDictionary);
+
+  const result = resolveAbsolutePaths(args.cwd)(parsedOutput);
+
+  return result;
 }
