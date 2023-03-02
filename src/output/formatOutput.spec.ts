@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { StatusDictionary } from "src/types.js";
-import { parseOutput } from "./parseOutput.js";
+import { formatOutput } from "./formatOutput.js";
 
-describe("Parse output", () => {
+describe("Format output", () => {
   const filenamesA: readonly string[] = ["filename.a1", "filename.a2"];
   const filenamesB: readonly string[] = ["filename.b1"];
   const statusDictionary: StatusDictionary = new Map();
@@ -11,7 +11,7 @@ describe("Parse output", () => {
     statusDictionary.set("M ", filenamesA);
     statusDictionary.set(" M", filenamesB);
 
-    expect(parseOutput(statusDictionary)).toStrictEqual([
+    expect(formatOutput(statusDictionary)).toStrictEqual([
       "filename.a1",
       "filename.a2",
       "filename.b1",

@@ -1,6 +1,6 @@
 import type { StatusDictionary } from "../types.js";
 
-export function parseOutput(
+export function formatOutput(
   statusDictionary: StatusDictionary
 ): readonly string[] {
   function extractDictionaryValuesFrom(dictionary: StatusDictionary) {
