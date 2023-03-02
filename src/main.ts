@@ -1,7 +1,7 @@
 import type { FilterOptions } from "./types.js";
-import { createStatusDictionary } from "./createStatusDictionary/index.js";
+import { createStatusDictionary } from "./statusDictionary/createStatusDictionary.js";
 import { execute } from "./commands/execute.js";
-import { filterStatusDictionary } from "./filterStatusDictionary/index.js";
+import { filterStatusDictionary } from "./statusDictionary/filterStatusDictionary.js";
 import { getArgs } from "./args/getArgs.js";
 import { parseArgs } from "./args/parseArgs.js";
 import { parseOutput } from "./services/parseOutput.js";

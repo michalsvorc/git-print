@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { StatusDictionary } from "src/types.js";
+import type { StatusDictionary } from "../types.js";
 import { filterStatusDictionary } from "./filterStatusDictionary.js";
 
 describe("Filtering status dictionary", () => {

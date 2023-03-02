@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { StatusOutput } from "src/types.js";
+import type { StatusOutput } from "../types.js";
 import { createStatusDictionary } from "./createStatusDictionary.js";
 
 const statusOutput: StatusOutput = [

@@ -1,4 +1,4 @@
-import type { FilterOptions, StatusDictionary } from "src/types.js";
+import type { FilterOptions, StatusDictionary } from "../types.js";
 
 import { STAGED, STATUS_DELETED, UNSTAGED } from "../constants.js";
 
