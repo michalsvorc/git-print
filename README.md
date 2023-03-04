@@ -137,7 +137,7 @@ yarn run dev
 Execute build:
 
 ```shell
-yarn node dist/index.js [OPTIONS]
+yarn start [OPTIONS]
 ```
 
 ### Guidelines
