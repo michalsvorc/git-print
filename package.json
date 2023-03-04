@@ -2,9 +2,9 @@
   "name": "ts-nodejs-template",
   "version": "1.7.0",
   "type": "module",
-  "description": "TypeScript Node.js application template.",
+  "description": "Print normalized list of git status files for command line usage.",
   "author": "Michal Svorc <dev@michalsvorc.com>",
-  "repository": "michalsvorc/ts-nodejs-template",
+  "repository": "michalsvorc/git-print",
   "license": "MIT",
   "packageManager": "yarn@3.3.0",
   "engines": {
