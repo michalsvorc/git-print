@@ -122,19 +122,19 @@ Run Prettier formatting on staged files, or format the current directory when no
 
 ### Setup
 
-Install dependencies and set up repository:
+Install dependencies:
 
 ```shell
-yarn install && yarn run bootstrap
+yarn install
 ```
 
-Development server:
+Run development server:
 
 ```shell
 yarn run dev
 ```
 
-Execute development build:
+Execute build:
 
 ```shell
 yarn node dist/index.js [OPTIONS]
