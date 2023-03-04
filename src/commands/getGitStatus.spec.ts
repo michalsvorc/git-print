@@ -14,7 +14,7 @@ describe("Get git status", () => {
     const showUntrackedFiles = true;
     const args = [...baseArgs, "--untracked-files=all"];
 
-    await getGitStatus(showUntrackedFiles, cwd);
+    await getGitStatus(cwd, showUntrackedFiles);
 
     expect(execa).toBeCalledWith(command, args, options);
   });
@@ -23,7 +23,7 @@ describe("Get git status", () => {
     const showUntrackedFiles = false;
     const args = [...baseArgs, "--untracked-files=no"];
 
-    await getGitStatus(showUntrackedFiles, cwd);
+    await getGitStatus(cwd, showUntrackedFiles);
 
     expect(execa).toBeCalledWith(command, args, options);
   });

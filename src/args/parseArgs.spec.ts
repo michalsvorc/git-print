@@ -5,7 +5,7 @@ describe("Parse input arguments", () => {
   it("should cast to correct types", () => {
     const args = parseArgs({
       _: [],
-      cwd: "cwd",
+      cwd: "/cwd",
       deleted: "true",
       staged: "true",
       stagedOnly: "true",
@@ -13,7 +13,7 @@ describe("Parse input arguments", () => {
       untracked: "true",
     });
 
-    expect(args.cwd).toBe("cwd");
+    expect(args.cwd).toBe("/cwd");
     expect(args.deleted).toBe(true);
     expect(args.staged).toBe(true);
     expect(args.stagedOnly).toBe(true);

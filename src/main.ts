@@ -12,30 +12,29 @@ type Result = readonly string[];
 export async function main(): Promise<Result> {
   const emptyResult: Result = [];
   const inputArgs = getArgs();
-  const args = parseArgs(inputArgs);
-  const showUntrackedFiles: boolean = args.untracked && !args.stagedOnly;
+  const { cwd, deleted, staged, stagedOnly, unstaged, untracked } =
+    parseArgs(inputArgs);
+  const showUntrackedFiles: boolean = untracked && !stagedOnly;
+  const { stdout: gitStatus } = await getGitStatus(cwd, showUntrackedFiles);
 
-  const gitStatusExecution = await getGitStatus(showUntrackedFiles, args.cwd);
-  const { stdout } = gitStatusExecution;
-  if (!stdout.length) return emptyResult;
+  if (!gitStatus.length) return emptyResult;
 
-  const statusDictionary = createStatusDictionary(stdout.split("\n"));
+  const statusDictionary = createStatusDictionary(gitStatus.split("\n"));
   const filteredStatusDictionary = filterStatusDictionary(statusDictionary)(
     Object.assign(
       {
-        deleted: args.deleted,
-        staged: args.staged,
-        unstaged: args.unstaged,
+        deleted,
+        staged,
+        unstaged,
       },
-      args.stagedOnly ? stagedOnlyFilterOptions : {}
+      stagedOnly ? stagedOnlyFilterOptions : {}
     )
   );
 
   if (!filteredStatusDictionary.size) return emptyResult;
 
-  const parsedOutput = formatOutput(filteredStatusDictionary);
-
-  const result = resolveAbsolutePaths(args.cwd)(parsedOutput);
+  const formattedOutput = formatOutput(filteredStatusDictionary);
+  const result = resolveAbsolutePaths(cwd, formattedOutput);
 
   return result;
 }

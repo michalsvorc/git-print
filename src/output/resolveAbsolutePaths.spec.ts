@@ -6,7 +6,7 @@ describe("Resolve absolute paths", () => {
   const filenames: readonly string[] = ["filename.00", "filename.01"];
 
   it("should prepend CWD to every filename in an array", () => {
-    expect(resolveAbsolutePaths(cwd)(filenames)).toStrictEqual([
+    expect(resolveAbsolutePaths(cwd, filenames)).toStrictEqual([
       `${cwd}/${filenames[0]}`,
       `${cwd}/${filenames[1]}`,
     ]);

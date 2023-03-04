@@ -14,16 +14,16 @@ export function filterStatusDictionary(statusDictionary: StatusDictionary) {
       .filter((key) => staged || !STAGED.test(key))
       .filter((key) => unstaged || !UNSTAGED.test(key));
 
-    const filteredDictionary: StatusDictionary = new Map();
+    const filteredStatusDictionary: StatusDictionary = new Map();
 
     for (const key of validKeys) {
-      filteredDictionary.set(
+      filteredStatusDictionary.set(
         key,
         // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
         statusDictionary.get(key) as readonly string[]
       );
     }
 
-    return filteredDictionary;
+    return filteredStatusDictionary;
   };
 }

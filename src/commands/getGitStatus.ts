@@ -2,8 +2,8 @@ import type { ExecaReturnValue } from "execa";
 import { execute } from "./execute.js";
 
 export function getGitStatus(
-  showUntrackedFiles: boolean,
-  cwd: string
+  cwd: string,
+  showUntrackedFiles: boolean
 ): Promise<ExecaReturnValue> {
   const command = "git";
   const args = [
