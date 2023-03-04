@@ -1,8 +1,8 @@
 import { createStatusDictionary } from "./statusDictionary/createStatusDictionary.js";
-import { execute } from "./commands/execute.js";
 import { filterStatusDictionary } from "./statusDictionary/filterStatusDictionary.js";
 import { formatOutput } from "./output/formatOutput.js";
 import { getArgs } from "./args/getArgs.js";
+import { getGitStatus } from "./commands/getGitStatus.js";
 import { parseArgs } from "./args/parseArgs.js";
 import { resolveAbsolutePaths } from "./output/resolveAbsolutePaths.js";
 import { stagedOnlyFilterOptions } from "./args/stagedOnlyFilterOptions.js";
@@ -15,19 +15,7 @@ export async function main(): Promise<Result> {
   const args = parseArgs(inputArgs);
   const showUntrackedFiles: boolean = args.untracked && !args.stagedOnly;
 
-  const command = "git";
-  const commandArguments = [
-    "status",
-    "--porcelain",
-    "--no-renames",
-    `--untracked-files=${showUntrackedFiles ? "all" : "no"}`,
-  ];
-  const commandOptions = { cwd: args.cwd };
-
-  const gitStatusExecution = await execute(command)(
-    commandArguments,
-    commandOptions
-  );
+  const gitStatusExecution = await getGitStatus(showUntrackedFiles, args.cwd);
   const { stdout } = gitStatusExecution;
   if (!stdout.length) return emptyResult;
 
