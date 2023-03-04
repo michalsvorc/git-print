@@ -30,30 +30,30 @@
   },
   "dependencies": {
     "execa": "6.1.0",
-    "minimist": "1.2.7"
+    "minimist": "1.2.8"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.2.0",
-    "@commitlint/config-conventional": "^17.2.0",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
     "@tsconfig/node16": "^1.0.3",
     "@types/eslint": "^8.21.1",
-    "@types/minimist": "^1",
-    "@types/node": "^18.11.9",
-    "@types/prettier": "^2.7.1",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^18.14.6",
+    "@types/prettier": "^2.7.2",
     "@types/set-value": "^4.0.1",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
-    "@vitest/coverage-c8": "^0.25.2",
+    "@vitest/coverage-c8": "^0.29.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-node": "^11.1.0",
-    "nodemon": "^2.0.20",
-    "prettier": "^2.7.1",
+    "nodemon": "^2.0.21",
+    "prettier": "^2.8.4",
     "standard-version": "^9.5.0",
     "typescript": "4.9.3",
-    "vite": "^3.2.4",
-    "vitest": "^0.25.2"
+    "vite": "^3.2.5",
+    "vitest": "^0.29.2"
   },
   "files": [
     "dist",
