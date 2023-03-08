@@ -1,5 +1,5 @@
 {
-  "name": "ts-nodejs-template",
+  "name": "git-print",
   "version": "1.7.0",
   "type": "module",
   "description": "Print normalized list of git status files for command line usage.",

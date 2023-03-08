@@ -2531,6 +2531,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"git-print@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "git-print@workspace:."
+  dependencies:
+    "@commitlint/cli": ^17.4.4
+    "@commitlint/config-conventional": ^17.4.4
+    "@tsconfig/node16": ^1.0.3
+    "@types/eslint": ^8.21.1
+    "@types/minimist": ^1.2.2
+    "@types/node": ^18.14.6
+    "@types/prettier": ^2.7.2
+    "@types/set-value": ^4.0.1
+    "@typescript-eslint/eslint-plugin": ^5.54.0
+    "@typescript-eslint/parser": ^5.54.0
+    "@vitest/coverage-c8": ^0.29.2
+    del-cli: ^5.0.0
+    eslint: ^8.35.0
+    eslint-config-prettier: ^8.6.0
+    eslint-plugin-node: ^11.1.0
+    execa: 7.0.0
+    minimist: 1.2.8
+    nodemon: ^2.0.21
+    prettier: ^2.8.4
+    standard-version: ^9.5.0
+    typescript: 4.9.3
+    vite: ^4.1.4
+    vitest: ^0.29.2
+  languageName: unknown
+  linkType: soft
+
 "git-raw-commits@npm:^2.0.0, git-raw-commits@npm:^2.0.8":
   version: 2.0.11
   resolution: "git-raw-commits@npm:2.0.11"
@@ -5027,36 +5057,6 @@ __metadata:
   checksum: 090adff1302ab20bd3486e6b4799e90f97726ed39e02b39e566f8ab674fd5bd5f727f43615debbfc580d33c6d9d1c6b1b3ce7d8e3cca3e20530a145ffa232c35
   languageName: node
   linkType: hard
-
-"ts-nodejs-template@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "ts-nodejs-template@workspace:."
-  dependencies:
-    "@commitlint/cli": ^17.4.4
-    "@commitlint/config-conventional": ^17.4.4
-    "@tsconfig/node16": ^1.0.3
-    "@types/eslint": ^8.21.1
-    "@types/minimist": ^1.2.2
-    "@types/node": ^18.14.6
-    "@types/prettier": ^2.7.2
-    "@types/set-value": ^4.0.1
-    "@typescript-eslint/eslint-plugin": ^5.54.0
-    "@typescript-eslint/parser": ^5.54.0
-    "@vitest/coverage-c8": ^0.29.2
-    del-cli: ^5.0.0
-    eslint: ^8.35.0
-    eslint-config-prettier: ^8.6.0
-    eslint-plugin-node: ^11.1.0
-    execa: 7.0.0
-    minimist: 1.2.8
-    nodemon: ^2.0.21
-    prettier: ^2.8.4
-    standard-version: ^9.5.0
-    typescript: 4.9.3
-    vite: ^4.1.4
-    vitest: ^0.29.2
-  languageName: unknown
-  linkType: soft
 
 "tslib@npm:^1.8.1":
   version: 1.14.1
