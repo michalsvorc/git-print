@@ -13,6 +13,7 @@
   "scripts": {
     "prepare": "git config core.hooksPath .hooks",
     "build": "NODE_ENV=production yarn exec node scripts/build.mjs",
+    "compile": "tsc --project tsconfig.build.json",
     "dev": "yarn run watch:src --exec 'yarn exec node scripts/dev.mjs'",
     "fix": "yarn run lint:es --fix && yarn run format",
     "format": "prettier --write --loglevel log .",

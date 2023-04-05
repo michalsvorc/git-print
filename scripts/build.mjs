@@ -15,4 +15,4 @@ if (env.NODE_ENV === "production") {
   await execa("del-cli", [outDir], executionOptions);
 }
 
-await execa("tsc", ["--project", "tsconfig.build.json"], executionOptions);
+await execa("yarn", ["compile"], executionOptions);
