@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { parseArgs } from "./parseArgs.js";
+import { parseArguments } from "./parseArguments.js";
 
 describe("Parse input arguments", () => {
-  it("should cast to correct types", () => {
-    const args = parseArgs({
+  it("should cast arguments to correct types", () => {
+    const args = parseArguments({
       _: [],
       cwd: "/cwd",
       deleted: "true",

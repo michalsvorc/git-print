@@ -8,3 +8,12 @@ export interface FilterOptions {
   readonly staged: boolean;
   readonly unstaged: boolean;
 }
+
+export interface Arguments {
+  readonly cwd: string;
+  readonly deleted: boolean;
+  readonly staged: boolean;
+  readonly stagedOnly: boolean;
+  readonly unstaged: boolean;
+  readonly untracked: boolean;
+}

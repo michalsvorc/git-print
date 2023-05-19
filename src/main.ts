@@ -1,19 +1,23 @@
 import { createStatusDictionary } from "./statusDictionary/createStatusDictionary.js";
 import { filterStatusDictionary } from "./statusDictionary/filterStatusDictionary.js";
 import { formatOutput } from "./output/formatOutput.js";
-import { getArgs } from "./args/getArgs.js";
+import { getDefaultArguments } from "./arguments/getDefaultArguments.js";
+import { getGitRoot } from "./commands/getGitRoot.js";
 import { getGitStatus } from "./commands/getGitStatus.js";
-import { parseArgs } from "./args/parseArgs.js";
+import { parseArguments } from "./arguments/parseArguments.js";
+import { readArgumentsFromInput } from "./arguments/readArgumentsFromInput.js";
 import { resolveAbsolutePaths } from "./output/resolveAbsolutePaths.js";
-import { stagedOnlyFilterOptions } from "./args/stagedOnlyFilterOptions.js";
+import { stagedOnlyFilterOptions } from "./arguments/stagedOnlyFilterOptions.js";
 
 type Result = readonly string[];
 
 export async function main(): Promise<Result> {
   const emptyResult: Result = [];
-  const inputArgs = getArgs();
+  const defaultCWD = (await getGitRoot()).stdout;
+  const defaultArguments = getDefaultArguments(defaultCWD);
+  const inputArgs = readArgumentsFromInput(defaultArguments);
   const { cwd, deleted, staged, stagedOnly, unstaged, untracked } =
-    parseArgs(inputArgs);
+    parseArguments(inputArgs);
   const showUntrackedFiles: boolean = untracked && !stagedOnly;
   const { stdout: gitStatus } = await getGitStatus(cwd, showUntrackedFiles);
 

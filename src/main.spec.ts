@@ -1,20 +1,20 @@
 import * as createStatusDictionary from "./statusDictionary/createStatusDictionary.js";
 import * as filterStatusDictionary from "./statusDictionary/filterStatusDictionary.js";
 import * as formatOutput from "./output/formatOutput.js";
-import * as getArgs from "./args/getArgs.js";
 import * as getGitStatus from "./commands/getGitStatus.js";
-import * as parseArgs from "./args/parseArgs.js";
+import * as parseArguments from "./arguments/parseArguments.js";
+import * as readArgumentsFromInput from "./arguments/readArgumentsFromInput.js";
 import * as resolveAbsolutePaths from "./output/resolveAbsolutePaths.js";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { Arguments } from "./args/Arguments.type.js";
+import type { Arguments } from "./types.js";
 import type { ExecaReturnValue } from "execa";
 import type { StatusDictionary } from "./types.js";
 import { main } from "./main.js";
 
 vi.mock("execa");
 vi.mock("./commands/getGitRoot.ts", () => ({
-  getGitRoot: vi.fn().mockResolvedValue({ stdout: "getGitRootResult" }),
+  getGitRoot: vi.fn().mockResolvedValue({ stdout: "/path/to/cwd" }),
 }));
 
 describe("Main function", () => {
@@ -22,18 +22,22 @@ describe("Main function", () => {
     vi.clearAllMocks();
   });
 
-  const getArgsSpy = vi.spyOn(getArgs, "getArgs").mockReturnValue({
-    _: [],
-    cwd: "/cwd",
-  });
-  const parseArgsSpy = vi.spyOn(parseArgs, "parseArgs").mockReturnValue({
-    cwd: "/cwd",
-    deleted: true,
-    staged: true,
-    stagedOnly: false,
-    unstaged: true,
-    untracked: true,
-  } as Arguments);
+  const getArgsSpy = vi
+    .spyOn(readArgumentsFromInput, "readArgumentsFromInput")
+    .mockReturnValue({
+      _: [],
+      cwd: "/cwd",
+    });
+  const parseArgsSpy = vi
+    .spyOn(parseArguments, "parseArguments")
+    .mockReturnValue({
+      cwd: "/cwd",
+      deleted: true,
+      staged: true,
+      stagedOnly: false,
+      unstaged: true,
+      untracked: true,
+    } as Arguments);
   const formatOutputSpy = vi.spyOn(formatOutput, "formatOutput");
   const createStatusDictionarySpy = vi.spyOn(
     createStatusDictionary,
