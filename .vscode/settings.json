@@ -14,7 +14,5 @@
     }
   },
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "cSpell.words": [
-    "unstaged"
-  ]
+  "cSpell.words": ["Execa", "unstaged"]
 }
