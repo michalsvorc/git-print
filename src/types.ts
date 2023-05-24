@@ -17,3 +17,5 @@ export interface Arguments {
   readonly unstaged: boolean;
   readonly untracked: boolean;
 }
+
+export type DefaultArguments = Omit<Arguments, "cwd">;
