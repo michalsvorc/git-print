@@ -1,7 +1,7 @@
 import type { ExecaReturnValue } from "execa";
 import { execute } from "./execute.js";
 
-export function getGitStatus(
+export async function getGitStatus(
   cwd: string,
   showUntrackedFiles: boolean
 ): Promise<ExecaReturnValue> {
@@ -14,5 +14,11 @@ export function getGitStatus(
   ];
   const options = { cwd };
 
-  return execute(command)(args, options);
+  try {
+    return await execute(command)(args, options);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Returning git status output failed.");
+    throw error;
+  }
 }
