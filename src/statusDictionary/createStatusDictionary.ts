@@ -1,6 +1,8 @@
 import type { StatusDictionary, StatusOutput } from "../types.js";
+import { resolveAbsolutePath } from "../output/resolveAbsolutePath.js";
 
 export function createStatusDictionary(
+  cwd: string,
   statusOutput: StatusOutput
 ): StatusDictionary {
   const statusDictionary: StatusDictionary = new Map();
@@ -8,7 +10,9 @@ export function createStatusDictionary(
   const statusFilenamePairs: [string, string][] = statusOutput.map((line) => {
     const status = line.substring(0, 2);
     const filename = line.substring(3, line.length);
-    return [status, filename];
+
+    const filenameAbsolutePath = resolveAbsolutePath(cwd, filename);
+    return [status, filenameAbsolutePath];
   });
 
   return statusFilenamePairs.reduce((dictionary, pair) => {

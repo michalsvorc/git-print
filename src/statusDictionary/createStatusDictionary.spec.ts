@@ -2,22 +2,22 @@ import { describe, expect, it } from "vitest";
 import type { StatusOutput } from "../types.js";
 import { createStatusDictionary } from "./createStatusDictionary.js";
 
-const statusOutput: StatusOutput = [
-  "M  file.00",
-  "M  file.01",
-  " M file.02",
-  "MM file.03",
-];
-
-const statusDictionary = new Map();
-
-statusDictionary.set("M ", ["file.00", "file.01"]);
-statusDictionary.set(" M", ["file.02"]);
-statusDictionary.set("MM", ["file.03"]);
-
 describe("Status dictionary creation", () => {
-  it("should create dictionary from status output", () => {
-    expect(createStatusDictionary(statusOutput)).toStrictEqual(
+  const cwd = "/path/to/cwd";
+  const statusOutput: StatusOutput = [
+    "M  file00.ext",
+    "M  file01.ext",
+    " M file02.ext",
+    "MM file03.ext",
+  ];
+
+  it("should return status dictionary from status output", () => {
+    const statusDictionary = new Map();
+    statusDictionary.set("M ", [`${cwd}/file00.ext`, `${cwd}/file01.ext`]);
+    statusDictionary.set(" M", [`${cwd}/file02.ext`]);
+    statusDictionary.set("MM", [`${cwd}/file03.ext`]);
+
+    expect(createStatusDictionary(cwd, statusOutput)).toStrictEqual(
       statusDictionary
     );
   });
