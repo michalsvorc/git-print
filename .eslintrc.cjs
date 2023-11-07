@@ -19,7 +19,6 @@ module.exports = {
   ],
   rules: {
     "no-console": "warn",
-    "sort-imports": "warn",
     "block-scoped-var": "error",
     eqeqeq: "error",
     "no-var": "error",

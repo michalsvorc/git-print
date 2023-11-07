@@ -39,17 +39,53 @@ yarn:
 yarn add --dev git-print
 ```
 
-## Usage
+## API Usage
 
-```shell
-git-print [OPTIONS]
+```javascript
+import gitPrint from "git-print";
+
+gitPrint().then((output) => console.log(output));
 ```
 
-When there are no changes in the current git repository, `git-print` exits with status code `1` instead of printing an empty file list.
+The output is a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object with
+keys as they appear in [git status output](https://git-scm.com/docs/git-status#_output):
 
-This allows for streamlined conditional chaining with other commands.
+```javascript
+Map(3) {
+  ' M' => [ 'file1' ],
+  'MM' => [ 'file2' ],
+  ' D' => [ 'file3', 'file4' ],
+  '??' => [ 'file5' ]
+}
+```
 
-## Options
+### API options
+
+`gitPrint()` takes an optional argument:
+
+```javascript
+{
+  cwd: string;
+  deleted: boolean;
+  staged: boolean;
+  stagedOnly: boolean;
+  unstaged: boolean;
+  untracked: boolean;
+}
+```
+
+The properties are mapped to [CLI options](#cli-options), see the CLI flags for documentation.
+
+## CLI Usage
+
+```shell
+git-print [OPTIONS...]
+```
+
+### CLI options
+
+`git-print` applies all flags with their default values. When you want to display only specific status of files, you have to toggle off
+all other statuses explicitly. `--staged-only` flag provides a shorthand for toggling multiple statuses.
 
 #### --cwd=`<string>`
 
@@ -73,7 +109,7 @@ Toggle listing of `staged` files.
 
 Default: `true`
 
-Shorthand option for listing of `staged` files only.
+Shorthand option for toggling listing of `staged` files only.
 
 This option makes the output suitable for processing with linting and formatting tools.
 
@@ -146,9 +182,7 @@ yarn start [OPTIONS]
 - [Conventional commits](https://github.com/conventional-changelog/commitlint#what-is-commitlint)
 - [Releases](https://github.com/conventional-changelog/standard-version)
 
-## Acknowledgement
-
-List of similar projects with API usage:
+## Similar projects
 
 - [staged-git-files](https://www.npmjs.com/package/staged-git-files)
 - [git-changed-files](https://www.npmjs.com/package/git-changed-files)

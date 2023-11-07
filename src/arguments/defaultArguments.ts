@@ -1,6 +1,6 @@
-import type { DefaultArguments } from "../types.js";
+import type { GitStatusArguments } from "../types.js";
 
-const defaultArguments: DefaultArguments = {
+const defaultGitStatusArguments: GitStatusArguments = {
   deleted: true,
   staged: true,
   stagedOnly: false,
@@ -8,4 +8,4 @@ const defaultArguments: DefaultArguments = {
   untracked: true,
 };
 
-export { defaultArguments };
+export { defaultGitStatusArguments };

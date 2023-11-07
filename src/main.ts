@@ -1,44 +1,71 @@
+import type {
+  GitStatusArguments,
+  InputArguments,
+  StatusDictionary,
+  StatusOutput,
+} from "./types.js";
+import { UnresolvedCWDError } from "./errors.js";
 import { createStatusDictionary } from "./statusDictionary/createStatusDictionary.js";
+import { defaultGitStatusArguments } from "./arguments/defaultArguments.js";
 import { filterStatusDictionary } from "./statusDictionary/filterStatusDictionary.js";
-import { formatOutput } from "./output/formatOutput.js";
-import { getDefaultArguments } from "./arguments/getDefaultArguments.js";
-import { getGitRoot } from "./commands/getGitRoot.js";
 import { getGitStatus } from "./commands/getGitStatus.js";
-import { parseArguments } from "./arguments/parseArguments.js";
-import { readArgumentsFromInput } from "./arguments/readArgumentsFromInput.js";
-import { resolveAbsolutePaths } from "./output/resolveAbsolutePaths.js";
 import { stagedOnlyFilterOptions } from "./arguments/stagedOnlyFilterOptions.js";
+import { parseCWDInputArguments } from "./arguments/parseCWDInputArguments.js";
+import { parseGitStatusInputArguments } from "./arguments/parseGitStatusInputArguments.js";
+import { splitInputArguments } from "./arguments/splitInputArguments.js";
 
-type Result = readonly string[];
+export async function main(
+  inputArguments?: InputArguments
+): Promise<StatusDictionary> {
+  const { cwdInputArguments, gitStatusInputArguments } =
+    splitInputArguments(inputArguments);
+  let cwd: string;
+  try {
+    cwd = await parseCWDInputArguments(cwdInputArguments.cwd);
+    if (!cwd) {
+      throw new Error("CWD is an empty value");
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnresolvedCWDError(error.message);
+    } else {
+      throw error;
+    }
+  }
 
-export async function main(): Promise<Result> {
-  const emptyResult: Result = [];
-  const defaultCWD = (await getGitRoot()).stdout;
-  const defaultArguments = getDefaultArguments(defaultCWD);
-  const inputArgs = readArgumentsFromInput(defaultArguments);
-  const { cwd, deleted, staged, stagedOnly, unstaged, untracked } =
-    parseArguments(inputArgs);
-  const showUntrackedFiles: boolean = untracked && !stagedOnly;
-  const { stdout: gitStatus } = await getGitStatus(cwd, showUntrackedFiles);
+  const gitStatusArguments: GitStatusArguments = parseGitStatusInputArguments(
+    gitStatusInputArguments
+  );
+
+  const gitStatus: string = (await getGitStatus(cwd)).stdout;
+
+  const emptyResult: StatusDictionary = new Map();
 
   if (!gitStatus.length) return emptyResult;
 
-  const statusDictionary = createStatusDictionary(gitStatus.split("\n"));
-  const filteredStatusDictionary = filterStatusDictionary(statusDictionary)(
+  const statusOutput: StatusOutput = gitStatus.split("\n");
+
+  const statusDictionary: StatusDictionary = createStatusDictionary(
+    cwd,
+    statusOutput
+  );
+
+  if (!inputArguments || !Object.keys(inputArguments).length)
+    return statusDictionary;
+
+  // currying?
+  //TODO test
+  const filteredStatusDictionary: StatusDictionary = filterStatusDictionary(
+    statusDictionary
+  )(
     Object.assign(
-      {
-        deleted,
-        staged,
-        unstaged,
-      },
-      stagedOnly ? stagedOnlyFilterOptions : {}
+      { ...defaultGitStatusArguments },
+      { ...gitStatusArguments },
+      gitStatusArguments.stagedOnly && stagedOnlyFilterOptions
     )
   );
 
   if (!filteredStatusDictionary.size) return emptyResult;
 
-  const formattedOutput = formatOutput(filteredStatusDictionary);
-  const result = resolveAbsolutePaths(cwd, formattedOutput);
-
-  return result;
+  return filteredStatusDictionary;
 }

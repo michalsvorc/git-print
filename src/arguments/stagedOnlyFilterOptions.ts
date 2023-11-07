@@ -1,6 +1,6 @@
-import type { FilterOptions } from "../types.js";
+import type { GitStatusArguments } from "../types.js";
 
-const stagedOnlyFilterOptions: FilterOptions = {
+const stagedOnlyFilterOptions: Partial<GitStatusArguments> = {
   deleted: false,
   staged: true,
   unstaged: false,

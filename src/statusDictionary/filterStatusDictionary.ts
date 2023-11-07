@@ -1,18 +1,29 @@
-import type { FilterOptions, StatusDictionary } from "../types.js";
+import type { GitStatusArguments, StatusDictionary } from "../types.js";
 
-import { STAGED, STATUS_DELETED, UNSTAGED } from "../constants.js";
+import { regExpStatusDictionary } from "../constants.js";
+
+function buildOmit(filterOptions: Omit<GitStatusArguments, "cwd">) {
+  const { deleted, untracked, staged, unstaged } = filterOptions;
+  const regExpList = [];
+  !deleted && regExpList.push(regExpStatusDictionary.get("deleted"));
+  !untracked && regExpList.push(regExpStatusDictionary.get("untracked"));
+  !staged && regExpList.push(regExpStatusDictionary.get("staged"));
+  !unstaged && regExpList.push(regExpStatusDictionary.get("unstaged"));
+
+  if (!regExpList.length) {
+    return new RegExp("^$");
+  }
+
+  return new RegExp(`^${regExpList.join("|")}$`);
+}
 
 export function filterStatusDictionary(statusDictionary: StatusDictionary) {
   return function filterStatusDictionaryOptions(
-    filterOptions: FilterOptions
+    filterOptions: Omit<GitStatusArguments, "cwd">
   ): StatusDictionary {
-    const { deleted, staged, unstaged } = filterOptions;
     const keys = Array.from(statusDictionary.keys());
-
-    const validKeys = keys
-      .filter((key) => deleted || !STATUS_DELETED.test(key))
-      .filter((key) => staged || !STAGED.test(key))
-      .filter((key) => unstaged || !UNSTAGED.test(key));
+    const omitRegExp = buildOmit(filterOptions);
+    const validKeys = keys.filter((key) => !omitRegExp.test(key));
 
     const filteredStatusDictionary: StatusDictionary = new Map();
 

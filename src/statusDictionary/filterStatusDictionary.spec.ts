@@ -1,67 +1,154 @@
-import { describe, expect, it } from "vitest";
-import type { StatusDictionary } from "../types.js";
+import type { GitStatusArguments, StatusDictionary } from "../types.js";
+import { beforeEach, describe, expect, it } from "vitest";
+import { defaultGitStatusArguments } from "../arguments/defaultArguments.js";
 import { filterStatusDictionary } from "./filterStatusDictionary.js";
 
-describe("Filtering status dictionary", () => {
+const unstagedStatusFrom = (key: string) => `${key} `;
+const stagedStatusFrom = (key: string) => ` ${key}`;
+
+function statusDictionaryFactory(keys: string[]): StatusDictionary {
   const statusDictionary: StatusDictionary = new Map();
 
-  statusDictionary.set("M ", ["staged"]);
-  statusDictionary.set(" D", ["deleted"]);
-  statusDictionary.set(" M", ["unstaged"]);
-
-  const filterWith = filterStatusDictionary(statusDictionary);
-
-  it("should leave unfiltered with every option set to true", () => {
-    expect(
-      filterWith({
-        deleted: true,
-        staged: true,
-        unstaged: true,
-      })
-    ).toStrictEqual(statusDictionary);
+  keys.map((key) => {
+    statusDictionary.set(unstagedStatusFrom(key), [`${key}_unstaged.ext`]);
+    statusDictionary.set(stagedStatusFrom(key), [`${key}_staged.ext`]);
   });
 
-  it("should filter out entries for deleted status", () => {
-    const filteredDictionary = new Map();
+  return statusDictionary;
+}
 
-    filteredDictionary.set("M ", ["staged"]);
-    filteredDictionary.set(" M", ["unstaged"]);
+describe("Filtering status dictionary", () => {
+  let statusDictionary: StatusDictionary;
 
-    expect(
-      filterWith({
+  const deletedKey = "D";
+  const modifiedKey = "M";
+  const addedKey = "A";
+  const untrackedKey = "??";
+
+  beforeEach(() => {
+    statusDictionary = statusDictionaryFactory([
+      addedKey,
+      modifiedKey,
+      deletedKey,
+    ]);
+    statusDictionary.set(untrackedKey, [`${untrackedKey}.ext`]);
+  });
+
+  describe("deleted argument", () => {
+    it("should leave OUT deleted files when set to `false`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
         deleted: false,
-        staged: true,
-        unstaged: true,
-      })
-    ).toStrictEqual(filteredDictionary);
+      };
+
+      expected.delete(unstagedStatusFrom(deletedKey));
+      expected.delete(stagedStatusFrom(deletedKey));
+
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
+
+    it("should keep IN deleted files when set to `true`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
+        deleted: true,
+      };
+
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
   });
 
-  it("should filter out entries for staged files", () => {
-    const filteredDictionary = new Map();
+  describe("untracked argument", () => {
+    it("should leave OUT untracked files when set to `false`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
+        untracked: false,
+      };
 
-    filteredDictionary.set(" D", ["deleted"]);
-    filteredDictionary.set(" M", ["unstaged"]);
+      expected.delete(untrackedKey);
 
-    expect(
-      filterWith({
-        deleted: true,
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
+
+    it("should keep IN untracked files when set to `true`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
+        untracked: true,
+      };
+
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
+  });
+
+  describe("staged argument", () => {
+    it("should leave OUT staged files when set to `false`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
         staged: false,
-        unstaged: true,
-      })
-    ).toStrictEqual(filteredDictionary);
+      };
+
+      expected.delete(stagedStatusFrom(addedKey));
+      expected.delete(stagedStatusFrom(modifiedKey));
+      expected.delete(stagedStatusFrom(deletedKey));
+      expected.delete(untrackedKey);
+
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
+
+    it("should keep IN staged files when set to `true`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
+        staged: true,
+      };
+
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
   });
 
-  it("should filter out entries for unstaged files", () => {
-    const filteredDictionary = new Map();
-
-    filteredDictionary.set("M ", ["staged"]);
-
-    expect(
-      filterWith({
-        deleted: true,
-        staged: true,
+  describe("unstaged argument", () => {
+    it("should leave OUT unstaged files when set to `false`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
         unstaged: false,
-      })
-    ).toStrictEqual(filteredDictionary);
+      };
+
+      expected.delete(unstagedStatusFrom(addedKey));
+      expected.delete(unstagedStatusFrom(modifiedKey));
+      expected.delete(unstagedStatusFrom(deletedKey));
+
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
+
+    it("should keep IN unstaged files when set to `true`", () => {
+      const expected = new Map(statusDictionary);
+      const options: Omit<GitStatusArguments, "cwd"> = {
+        ...defaultGitStatusArguments,
+        unstaged: true,
+      };
+
+      expect(filterStatusDictionary(statusDictionary)(options)).toStrictEqual(
+        expected
+      );
+    });
   });
 });

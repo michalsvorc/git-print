@@ -14,5 +14,6 @@
     }
   },
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "cSpell.words": ["Execa", "unstaged"]
+  "cSpell.words": ["Execa", "unstaged"],
+  "compile-hero.disable-compile-files-on-did-save-code": false
 }

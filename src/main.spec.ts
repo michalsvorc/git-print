@@ -1,168 +1,226 @@
-import * as createStatusDictionary from "./statusDictionary/createStatusDictionary.js";
+// import * as createStatusDictionary from "./statusDictionary/createStatusDictionary.js";
 import * as filterStatusDictionary from "./statusDictionary/filterStatusDictionary.js";
-import * as formatOutput from "./output/formatOutput.js";
+// import * as formatOutput from "./output/formatOutput.js";
+import { main } from "./main.js";
 import * as getGitStatus from "./commands/getGitStatus.js";
-import * as parseArguments from "./arguments/parseArguments.js";
-import * as readArgumentsFromInput from "./arguments/readArgumentsFromInput.js";
-import * as resolveAbsolutePaths from "./output/resolveAbsolutePaths.js";
+// import * as parseArguments from "./arguments/castInputArguments.js";
+// import * as readInputArguments from "./arguments/readInputArguments.js";
+// import * as resolveAbsolutePath from "./output/resolveAbsolutePath.js";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { Arguments } from "./types.js";
+import type { InputArguments, StatusDictionary } from "./types.js";
 import type { ExecaReturnValue } from "execa";
-import type { StatusDictionary } from "./types.js";
-import { main } from "./main.js";
+import * as getGitRoot from "./commands/getGitRoot.js";
+import { UnresolvedCWDError } from "./errors.js";
+import * as parseCWDInputArguments from "./arguments/parseCWDInputArguments.js";
+import * as splitInputArguments from "./arguments/splitInputArguments.js";
+import * as parseGitStatusInputArguments from "./arguments/parseGitStatusInputArguments.js";
+import * as createStatusDictionary from "./statusDictionary/createStatusDictionary.js";
 
 vi.mock("execa");
-vi.mock("./commands/getGitRoot.ts", () => ({
-  getGitRoot: vi.fn().mockResolvedValue({ stdout: "/path/to/cwd" }),
-}));
 
-describe("Main function", () => {
+describe("Main library function", () => {
+  vi.spyOn(getGitRoot, "getGitRoot").mockResolvedValue({
+    stdout: "/path/to/git/root",
+  } as ExecaReturnValue);
+  vi.spyOn(getGitStatus, "getGitStatus").mockResolvedValue({
+    stdout: "M test.ext",
+  } as ExecaReturnValue);
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  const getArgsSpy = vi
-    .spyOn(readArgumentsFromInput, "readArgumentsFromInput")
-    .mockReturnValue({
-      _: [],
-      cwd: "/cwd",
-    });
-  const parseArgsSpy = vi
-    .spyOn(parseArguments, "parseArguments")
-    .mockReturnValue({
-      cwd: "/cwd",
-      deleted: true,
-      staged: true,
-      stagedOnly: false,
-      unstaged: true,
-      untracked: true,
-    } as Arguments);
-  const formatOutputSpy = vi.spyOn(formatOutput, "formatOutput");
-  const createStatusDictionarySpy = vi.spyOn(
-    createStatusDictionary,
-    "createStatusDictionary"
-  );
-  const filterStatusDictionarySpy = vi.spyOn(
-    filterStatusDictionary,
-    "filterStatusDictionary"
-  );
-  const resolveAbsolutePathsSpy = vi.spyOn(
-    resolveAbsolutePaths,
-    "resolveAbsolutePaths"
-  );
-
-  describe("when there ARE modified files", () => {
-    const getGitStatusSpy = vi
-      .spyOn(getGitStatus, "getGitStatus")
-      .mockResolvedValue({
-        stdout: "M  file",
-      } as ExecaReturnValue);
-
-    it("should get program input arguments", async () => {
-      await main();
-
-      expect(getArgsSpy).toBeCalledTimes(1);
+  describe("parameters", () => {
+    it("should resolve with no input arguments", async () => {
+      const args = undefined;
+      await expect(main(args)).resolves.not.toThrowError();
     });
 
-    it("should parse program input arguments", async () => {
-      await main();
+    it("should resolve with empty object as input arguments", async () => {
+      const args = {};
+      await expect(main(args)).resolves.not.toThrowError();
+    });
 
-      expect(parseArgsSpy).toBeCalledTimes(1);
-      expect(parseArgsSpy).toBeCalledWith({
-        _: [],
-        cwd: "/cwd",
+    it("should resolve with CWD arguments only", async () => {
+      const args = { cwd: "/path/to/cwd" };
+      await expect(main(args)).resolves.not.toThrowError();
+    });
+
+    it("should resolve with git status arguments only", async () => {
+      const args = {
+        deleted: false,
+        staged: false,
+        stagedOnly: false,
+        unstaged: false,
+        untracked: false,
+      };
+      await expect(main(args)).resolves.not.toThrowError();
+    });
+
+    it("should resolve with all arguments", async () => {
+      const args = {
+        cwd: "/path/to/cwd",
+        deleted: false,
+        staged: false,
+        stagedOnly: false,
+        unstaged: false,
+        untracked: false,
+      };
+      await expect(main(args)).resolves.not.toThrowError();
+    });
+
+    it("should resolve with partial arguments", async () => {
+      const args = {
+        stagedOnly: false,
+      };
+      await expect(main(args)).resolves.not.toThrowError();
+    });
+  });
+
+  describe("process", () => {
+    it("should pass input arguments to split arguments method", async () => {
+      const inputArguments: InputArguments = {
+        cwd: "/path/to/cwd",
+        deleted: false,
+      };
+      const splitInputArgumentsSpy = vi.spyOn(
+        splitInputArguments,
+        "splitInputArguments"
+      );
+      await main(inputArguments);
+
+      expect(splitInputArgumentsSpy).toHaveBeenCalledTimes(1);
+      expect(splitInputArgumentsSpy).toHaveBeenCalledWith(inputArguments);
+    });
+
+    it("should pass cwd arguments to parsing method", async () => {
+      const inputArguments: InputArguments = { cwd: "/path/to/cwd" };
+      const parseCWDInputArgumentSpy = vi.spyOn(
+        parseCWDInputArguments,
+        "parseCWDInputArguments"
+      );
+      await main(inputArguments);
+
+      expect(parseCWDInputArgumentSpy).toHaveBeenCalledTimes(1);
+      expect(parseCWDInputArgumentSpy).toHaveBeenCalledWith(inputArguments.cwd);
+    });
+
+    it("should pass git status arguments to parsing method", async () => {
+      const parseGitStatusInputArgumentsSpy = vi.spyOn(
+        parseGitStatusInputArguments,
+        "parseGitStatusInputArguments"
+      );
+      const inputArguments: InputArguments = { deleted: true };
+      await main(inputArguments);
+
+      expect(parseGitStatusInputArgumentsSpy).toHaveBeenCalledTimes(1);
+      expect(parseGitStatusInputArgumentsSpy).toHaveBeenCalledWith({
+        staged: undefined,
+        stagedOnly: undefined,
+        unstaged: undefined,
+        untracked: undefined,
+        ...inputArguments,
       });
     });
 
-    it("should execute git status command", async () => {
-      await main();
+    it("should pass cwd argument to get git status method", async () => {
+      const inputArguments: InputArguments = { cwd: "/path/to/cwd" };
+      const getGitStatusSpy = vi.spyOn(getGitStatus, "getGitStatus");
 
-      expect(getGitStatusSpy).toBeCalledTimes(1);
-      expect(getGitStatusSpy).toBeCalledWith("/cwd", true);
+      await main(inputArguments);
+
+      expect(getGitStatusSpy).toHaveBeenCalledTimes(1);
+      expect(getGitStatusSpy).toHaveBeenCalledWith(inputArguments.cwd);
     });
 
-    it("should create status dictionary from git status", async () => {
-      await main();
+    it("should split git status output by newlines and pass it to create status dictionary method", async () => {
+      const inputArguments: InputArguments = { cwd: "/path/to/cwd" };
+      const stringWithNewlines = "A\nB\nC";
+      const getGitStatusMock = vi
+        .spyOn(getGitStatus, "getGitStatus")
+        .mockResolvedValueOnce({
+          stdout: stringWithNewlines,
+        } as ExecaReturnValue);
+      const createStatusDictionarySpy = vi.spyOn(
+        createStatusDictionary,
+        "createStatusDictionary"
+      );
 
-      expect(createStatusDictionarySpy).toBeCalledTimes(1);
-      expect(createStatusDictionarySpy).toBeCalledWith(["M  file"]);
+      await main(inputArguments);
+
+      expect(getGitStatusMock).toHaveBeenCalledTimes(1);
+      expect(createStatusDictionarySpy).toHaveBeenCalledTimes(1);
+      expect(createStatusDictionarySpy).toHaveBeenCalledWith(
+        inputArguments.cwd,
+        ["A", "B", "C"]
+      );
     });
 
-    it("should filter status dictionary", async () => {
-      const statusDictionary: StatusDictionary = new Map();
-      statusDictionary.set("M ", ["file"]);
+    it("should immediately return created status dictionary when no input arguments were given", async () => {
+      const statusDictionary = new Map();
+      statusDictionary.set("A", 1);
+      const createStatusDictionaryMock = vi
+        .spyOn(createStatusDictionary, "createStatusDictionary")
+        .mockReturnValueOnce(statusDictionary as StatusDictionary);
 
-      await main();
+      const result = await main(undefined);
 
-      expect(filterStatusDictionarySpy).toBeCalledTimes(1);
-      expect(filterStatusDictionarySpy).toBeCalledWith(statusDictionary);
-    });
-
-    it("should format output from filtered status dictionary", async () => {
-      const filteredStatusDictionary: StatusDictionary = new Map();
-      filteredStatusDictionary.set("M ", ["file"]);
-
-      await main();
-
-      expect(formatOutputSpy).toBeCalledTimes(1);
-      expect(formatOutputSpy).toBeCalledWith(filteredStatusDictionary);
-    });
-
-    it("should resolve absolute paths in formatted output", async () => {
-      await main();
-
-      expect(resolveAbsolutePathsSpy).toBeCalledTimes(1);
-      expect(resolveAbsolutePathsSpy).toBeCalledWith("/cwd", ["file"]);
+      expect(createStatusDictionaryMock).toHaveBeenCalledTimes(1);
+      expect(result).toStrictEqual(statusDictionary);
     });
   });
 
-  describe("when there ARE NOT modified files", () => {
-    const emptyResult: string[] = [];
+  describe("exceptions", () => {
+    it("should throw unresolved CWD error when parsing CWD input arguments return falsy cwd value", async () => {
+      vi.spyOn(
+        parseCWDInputArguments,
+        "parseCWDInputArguments"
+      ).mockResolvedValueOnce("");
 
-    it("should stop execution on empty git status", async () => {
-      const getGitStatusSpy = vi
+      await expect(main()).rejects.toThrowError(
+        new UnresolvedCWDError("CWD is an empty value")
+      );
+    });
+
+    it("should throw unresolved CWD error when parsing CWD input arguments throws", async () => {
+      const errorMessage = "Can't parse";
+      vi.spyOn(
+        parseCWDInputArguments,
+        "parseCWDInputArguments"
+      ).mockImplementationOnce(() => {
+        throw new Error(errorMessage);
+      });
+
+      await expect(main()).rejects.toThrowError(
+        new UnresolvedCWDError(errorMessage)
+      );
+    });
+  });
+
+  describe("empty result", () => {
+    const emptyResult = new Map();
+
+    it("should be returned when git status method returns an empty result", async () => {
+      const getGitStatusMock = vi
         .spyOn(getGitStatus, "getGitStatus")
-        .mockResolvedValue({
-          stdout: "",
-        } as ExecaReturnValue);
+        .mockResolvedValueOnce({ stdout: [] } as unknown as ExecaReturnValue);
 
       const result = await main();
 
-      expect(result).toEqual(emptyResult);
-      expect(getArgsSpy).toBeCalled();
-      expect(parseArgsSpy).toBeCalled();
-      expect(getGitStatusSpy).toBeCalled();
-      expect(createStatusDictionarySpy).not.toBeCalled();
-      expect(filterStatusDictionarySpy).not.toBeCalled();
-      expect(formatOutputSpy).not.toBeCalled();
-      expect(resolveAbsolutePathsSpy).not.toBeCalled();
+      expect(getGitStatusMock).toHaveBeenCalledTimes(1);
+      expect(result).toStrictEqual(emptyResult);
     });
-  });
 
-  describe("when there ARE NOT modified files according to filters set by input arguments", () => {
-    const emptyResult: string[] = [];
-
-    it("should stop execution on empty filtered status dictionary", async () => {
-      const getGitStatusSpy = vi
-        .spyOn(getGitStatus, "getGitStatus")
-        .mockResolvedValue({
-          stdout: "M  file",
-        } as ExecaReturnValue);
-      const filterStatusDictionarySpy = vi
+    it("should be returned when filtered status dictionary returns an empty result", async () => {
+      const filterStatusDictionaryMock = vi
         .spyOn(filterStatusDictionary, "filterStatusDictionary")
-        .mockReturnValue(() => new Map());
+        .mockImplementationOnce(() => () => new Map());
 
-      const result = await main();
+      const result = await main({ deleted: true });
 
-      expect(result).toEqual(emptyResult);
-      expect(getArgsSpy).toBeCalled();
-      expect(parseArgsSpy).toBeCalled();
-      expect(getGitStatusSpy).toBeCalled();
-      expect(createStatusDictionarySpy).toBeCalled();
-      expect(filterStatusDictionarySpy).toBeCalled();
-      expect(formatOutputSpy).not.toBeCalled();
-      expect(resolveAbsolutePathsSpy).not.toBeCalled();
+      expect(filterStatusDictionaryMock).toHaveBeenCalledTimes(1);
+      expect(result).toStrictEqual(emptyResult);
     });
   });
 });

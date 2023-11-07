@@ -1,16 +1,11 @@
 export type StatusDictionary = Map<string, readonly string[]>;
 export type StatusOutput = readonly string[];
-export interface GitArgumentsOptions {
-  readonly untracked: boolean;
-}
-export interface FilterOptions {
-  readonly deleted: boolean;
-  readonly staged: boolean;
-  readonly unstaged: boolean;
+
+export interface CWDArguments {
+  cwd: string;
 }
 
-export interface Arguments {
-  readonly cwd: string;
+export interface GitStatusArguments {
   readonly deleted: boolean;
   readonly staged: boolean;
   readonly stagedOnly: boolean;
@@ -18,4 +13,4 @@ export interface Arguments {
   readonly untracked: boolean;
 }
 
-export type DefaultArguments = Omit<Arguments, "cwd">;
+export type InputArguments = Partial<CWDArguments & GitStatusArguments>;

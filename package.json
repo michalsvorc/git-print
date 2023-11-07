@@ -62,6 +62,7 @@
     "README.md",
     "package.json"
   ],
+  "bin": "./dist/cli/index.js",
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts"
 }
