@@ -1,5 +1,11 @@
-import { main } from "./main";
+import { main } from "./main.js";
 
-main().then((output) => {
-  process.stdout.write(`${output.join(" ")}\n`);
-});
+// // eslint-disable-next-line no-console
+// console.log(
+//   await main({
+//     staged: true,
+//     unstaged: false,
+//   })
+// );
+
+export default main;

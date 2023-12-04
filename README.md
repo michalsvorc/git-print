@@ -1,8 +1,8 @@
 # git-print
 
-Print normalized list of git status files for command line usage.
+Print normalized git status output for command line usage.
 
-```console
+```shell
 $ git status -s
 
 # Output:
@@ -16,39 +16,76 @@ $ git-print
 $ /path/to/README.md /path/to/src/index.js /path/to/src/index.spec.js
 ```
 
-## Contents
+## Content
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Options](#options)
 - [Examples](#examples)
-- [Changelog](#changelog)
-- [API usage](#api-usge)
+- [Development](#development)
+- [Acknowledgement](#acknowledgement)
 
 ## Installation
 
-yarn
+npm:
 
-```console
-$ yarn add git-print --dev
+```shell
+npm install --save-dev git-print
 ```
 
-npm
+yarn:
 
-```console
-$ npm install git-print --save-dev
+```shell
+yarn add --dev git-print
 ```
 
-## Usage
+## API Usage
 
-```console
-$ git-print [OPTIONS]
+```javascript
+import gitPrint from "git-print";
+
+gitPrint().then((output) => console.log(output));
 ```
 
-When there are no changes in the current git repository, `git-print` exits with status code `1` instead of printing an
-empty file list. This allows for streamlined conditional chaining with other commands.
+The output is a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object with
+keys as they appear in [git status output](https://git-scm.com/docs/git-status#_output):
 
-## Options
+```javascript
+Map(3) {
+  ' M' => [ 'file1' ],
+  'MM' => [ 'file2' ],
+  ' D' => [ 'file3', 'file4' ],
+  '??' => [ 'file5' ]
+}
+```
+
+### API options
+
+`gitPrint()` takes an optional argument:
+
+```javascript
+{
+  cwd: string;
+  deleted: boolean;
+  staged: boolean;
+  stagedOnly: boolean;
+  unstaged: boolean;
+  untracked: boolean;
+}
+```
+
+The properties are mapped to [CLI options](#cli-options), see the CLI flags for documentation.
+
+## CLI Usage
+
+```shell
+git-print [OPTIONS...]
+```
+
+### CLI options
+
+`git-print` applies all flags with their default values. When you want to display only specific status of files, you have to toggle off
+all other statuses explicitly. `--staged-only` flag provides a shorthand for toggling multiple statuses.
 
 #### --cwd=`<string>`
 
@@ -72,17 +109,18 @@ Toggle listing of `staged` files.
 
 Default: `true`
 
-Shorthand option for listing of `staged` files only.
+Shorthand option for toggling listing of `staged` files only.
 
 This option makes the output suitable for processing with linting and formatting tools.
 
 Same as manually specifying options:
 
-```console
---staged=true \
---deleted=false \
---unstaged=false \
---untracked=false
+```shell
+git-print \
+  --staged=true \
+  --deleted=false \
+  --unstaged=false \
+  --untracked=false
 ```
 
 #### --unstaged=`<boolean>`
@@ -101,7 +139,7 @@ Toggle listing of `untracked` files.
 
 Run Prettier formatting on staged files, or format the current directory when no files are staged.
 
-package.json:
+`package.json`:
 
 ```json
 {
@@ -113,28 +151,38 @@ package.json:
 
 ## Development
 
-Clone this repository and execute:
+### Requirements
 
-```console
-$ yarn install && yarn run bootstrap
+- [Yarn](https://yarnpkg.com/getting-started/install)
+- [Editor SDKs](https://yarnpkg.com/getting-started/editor-sdks)
+
+### Setup
+
+Install dependencies:
+
+```shell
+yarn install
 ```
 
-See the list of available commands:
+Run development server:
 
-```console
-$ yarn run
+```shell
+yarn run dev
 ```
 
-- Install [editor SDKs](https://yarnpkg.com/getting-started/editor-sdks/) for Yarn Plug'n'Play installs.
-- Execute `yarn dev` to start the local development environment.
+Execute build:
 
-## Changelog
+```shell
+yarn start [OPTIONS]
+```
 
-See the [releases](https://github.com/michalsvorc/git-print/releases) page.
+### Guidelines
 
-## Read more
+- [TypeScript style guide](https://google.github.io/styleguide/tsguide.html)
+- [Conventional commits](https://github.com/conventional-changelog/commitlint#what-is-commitlint)
+- [Releases](https://github.com/conventional-changelog/standard-version)
 
-List of similar projects with API usage:
+## Similar projects
 
 - [staged-git-files](https://www.npmjs.com/package/staged-git-files)
 - [git-changed-files](https://www.npmjs.com/package/git-changed-files)

@@ -1,23 +1,10 @@
-# Configuration files
-/.*
-!/.*.js
-!/.*.json
-
-# Hook scripts
-/.hooks/
-
 # Yarn
 /.yarn/
+.pnp.*
 yarn.lock
 
-# Jest
-__snapshots__
-
 # Copied from .gitignore until style formatter allows multiple ignore sources.
-# See:
-# https://github.com/prettier/prettier/issues/8506#issuecomment-659604909
-# https://github.com/kaelzhang/node-ignore/issues/58
-
+# See: https://github.com/prettier/prettier/issues/8048
 # .env
 .env*
 
@@ -26,13 +13,21 @@ __snapshots__
 /build/
 /lib/
 
+# Generated output
+/CHANGELOG.md
+
 # Yarn
-.pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
+!.yarn/sdks
 !.yarn/versions
+
+# Swap the comments on the following lines if you wish to use zero-installs
+# Documentation here: https://yarnpkg.com/features/zero-installs
+#!.yarn/cache
+.pnp.*
 
 # Dependency directories
 node_modules/
@@ -68,8 +63,6 @@ pids
 
 # IDEs and editors
 Session.vim
-.idea
-.vscode
 *.launch
 *.sublime-workspace
 *.suo
